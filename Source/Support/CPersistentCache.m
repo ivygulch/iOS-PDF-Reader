@@ -133,8 +133,8 @@
     [self.cache setObject:obj forKey:key cost:g];
     
     NSURL *theURL = [self.URL URLByAppendingPathComponent:key];
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+// thealch3m1st: dispatching this block causes weird behavior with the preview pages. Like some of them not showing up untill all of them are generated. My opinion is that this happens because the delegate callback in the document view controller happens before the file is actually written and this happens because of dispatch_async. I tested this on single core devices because thats where I had the issue.
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
         
         BOOL theWriteFlag = NO;
         
@@ -161,7 +161,7 @@
             NSData *theData = [NSPropertyListSerialization dataWithPropertyList:theMetadata format:NSPropertyListBinaryFormat_v1_0 options:0 error:NULL];
             [theData writeToURL:[theURL URLByAppendingPathExtension:@"metadata.plist"] options:0 error:NULL];
             }
-        });
+//        });
     }
 
 - (void)removeObjectForKey:(id)key
@@ -249,6 +249,8 @@
 	NSError *theError = NULL;
 	if ([[NSFileManager defaultManager] removeItemAtURL:self.URL error:&theError] == NO) {
 		NSLog(@"Error destorying cache %@: %@", self.name, theError);
+        // thealch3m1st: set the URL to nil otherwise it won't save anymore 
+        _URL = nil;
 	}
 }
 

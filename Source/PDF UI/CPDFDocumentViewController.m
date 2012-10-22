@@ -333,7 +333,9 @@
     NSMutableArray *thePages = [NSMutableArray array];
     for (NSUInteger N = inRange.location; N != inRange.location + inRange.length; ++N)
         {
-        CPDFPage *thePage = N > 0 ? [self.document pageForPageNumber:N] : NULL;
+        //thealch3m1st: if you do this on the last page of a document with an even number of pages it causes the assertion to fail because the last document is not a valid document (number of pages + 1)
+        NSUInteger pageNumber = N > self.document.numberOfPages ? 0 : N;
+        CPDFPage *thePage = pageNumber > 0 ? [self.document pageForPageNumber:pageNumber] : NULL;
         [thePages addObject:[self pageViewControllerWithPage:thePage]];
         }
     return(thePages);
@@ -502,6 +504,11 @@
     NSUInteger theNextPageNumber = theViewController.page.pageNumber + 1;
     if (theNextPageNumber > self.document.numberOfPages)
         {
+        //thealch3m1st: if we are in two page mode and the document has an even number of pages if it would just return NULL it woudln't flip to that last page so we have to return a an empty page for the (number of pages + 1)th page.
+            if(self.document.numberOfPages %2 == 0 &&
+               theNextPageNumber == self.document.numberOfPages + 1 &&
+               self.pageViewController.spineLocation == UIPageViewControllerSpineLocationMid)
+                return [self pageViewControllerWithPage:NULL];
         return(NULL);
         }
 
