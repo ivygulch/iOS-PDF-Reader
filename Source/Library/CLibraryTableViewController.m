@@ -29,17 +29,17 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of Jonathan Wight.
 
-#import "CLibraryViewController.h"
+#import "CLibraryTableViewController.h"
 
 #import "CPDFDocumentViewController.h"
 #import "NSFileManager_BugFixExtensions.h"
 #import "CPDFDocument.h"
 
-@interface CLibraryViewController ()
+@interface CLibraryTableViewController ()
 - (void)scanDirectories;
 @end
 
-@implementation CLibraryViewController
+@implementation CLibraryTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {

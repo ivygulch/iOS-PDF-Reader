@@ -25,7 +25,7 @@
 		455699B215507139009E52FE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4556999E15507139009E52FE /* main.m */; };
 		455699B315507139009E52FE /* PDFReaderAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699A115507139009E52FE /* PDFReaderAppDelegate.m */; };
 		455699D415507141009E52FE /* CLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699BA15507141009E52FE /* CLibrary.m */; };
-		455699D515507141009E52FE /* CLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699BC15507141009E52FE /* CLibraryViewController.m */; };
+		455699D515507141009E52FE /* CLibraryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699BC15507141009E52FE /* CLibraryTableViewController.m */; };
 		455699D715507141009E52FE /* CPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699C015507141009E52FE /* CPDFDocument.m */; };
 		455699D815507141009E52FE /* CPDFDocument_Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699C215507141009E52FE /* CPDFDocument_Private.m */; };
 		455699D915507141009E52FE /* CPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699C415507141009E52FE /* CPDFPage.m */; };
@@ -72,8 +72,8 @@
 		455699A115507139009E52FE /* PDFReaderAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFReaderAppDelegate.m; sourceTree = "<group>"; };
 		455699B915507141009E52FE /* CLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLibrary.h; sourceTree = "<group>"; };
 		455699BA15507141009E52FE /* CLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLibrary.m; sourceTree = "<group>"; };
-		455699BB15507141009E52FE /* CLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLibraryViewController.h; sourceTree = "<group>"; };
-		455699BC15507141009E52FE /* CLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLibraryViewController.m; sourceTree = "<group>"; };
+		455699BB15507141009E52FE /* CLibraryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLibraryTableViewController.h; sourceTree = "<group>"; };
+		455699BC15507141009E52FE /* CLibraryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLibraryTableViewController.m; sourceTree = "<group>"; };
 		455699BF15507141009E52FE /* CPDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFDocument.h; sourceTree = "<group>"; };
 		455699C015507141009E52FE /* CPDFDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFDocument.m; sourceTree = "<group>"; };
 		455699C115507141009E52FE /* CPDFDocument_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFDocument_Private.h; sourceTree = "<group>"; };
@@ -204,8 +204,8 @@
 			children = (
 				455699B915507141009E52FE /* CLibrary.h */,
 				455699BA15507141009E52FE /* CLibrary.m */,
-				455699BB15507141009E52FE /* CLibraryViewController.h */,
-				455699BC15507141009E52FE /* CLibraryViewController.m */,
+				455699BB15507141009E52FE /* CLibraryTableViewController.h */,
+				455699BC15507141009E52FE /* CLibraryTableViewController.m */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -351,7 +351,7 @@
 				455699B215507139009E52FE /* main.m in Sources */,
 				455699B315507139009E52FE /* PDFReaderAppDelegate.m in Sources */,
 				455699D415507141009E52FE /* CLibrary.m in Sources */,
-				455699D515507141009E52FE /* CLibraryViewController.m in Sources */,
+				455699D515507141009E52FE /* CLibraryTableViewController.m in Sources */,
 				4539023B1780B39D00C3CC47 /* CPreviewCollectionViewCell.m in Sources */,
 				455699D715507141009E52FE /* CPDFDocument.m in Sources */,
 				455699D815507141009E52FE /* CPDFDocument_Private.m in Sources */,
