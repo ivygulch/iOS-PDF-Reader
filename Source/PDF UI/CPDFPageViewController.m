@@ -36,7 +36,6 @@
 #import "CPDFPage.h"
 
 @interface CPDFPageViewController ()
-@property (readwrite, nonatomic, strong) CPDFPage *page;
 @property (readwrite, nonatomic, strong) IBOutlet CPDFPageView *pageView;
 @property (readwrite, nonatomic, strong) IBOutlet UIImageView *previewView;
 @property (readwrite, nonatomic, strong) IBOutlet UIImageView *placeholderView;
@@ -59,6 +58,11 @@
     {
     [super viewDidLoad];
     //
+    self.pageView = [[CPDFPageView alloc] initWithFrame:self.view.bounds];
+    self.pageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.pageView.page = self.page;
+    [self.view addSubview:self.pageView];
+
     if (self.page != NULL)
         {
 //        self.previewView = [[UIImageView alloc] initWithFrame:self.view.bounds];
@@ -66,16 +70,18 @@
 //        self.previewView.image = self.page.preview;
 //        [self.view addSubview:self.previewView];
 
-        self.pageView = [[CPDFPageView alloc] initWithFrame:self.view.bounds];
-        self.pageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.pageView.page = self.page;
-        [self.view addSubview:self.pageView];
         }
     }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
     {
     return(YES);
+    }
+
+- (void)setPage:(CPDFPage *)page
+    {
+    _page = page;
+    self.pageView.page = page;
     }
 
 - (NSUInteger)pageNumber

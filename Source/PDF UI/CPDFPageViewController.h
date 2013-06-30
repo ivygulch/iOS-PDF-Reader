@@ -37,7 +37,7 @@
 @interface CPDFPageViewController : UIViewController
 
 @property (readonly, nonatomic, assign) NSUInteger pageNumber;
-@property (readonly, nonatomic, strong) CPDFPage *page;
+@property (readwrite, nonatomic, strong) CPDFPage *page;
 @property (readonly, nonatomic, strong) CPDFPageView *pageView;
 
 - (id)initWithPage:(CPDFPage *)inPage;

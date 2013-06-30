@@ -86,7 +86,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
     {
     CPDFDocumentPageViewController *theDestination = segue.destinationViewController;
-    theDestination.magazineMode = NO;
+//    theDestination.magazineMode = NO;
 
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
 

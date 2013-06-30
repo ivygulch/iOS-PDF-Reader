@@ -47,7 +47,34 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="95U-Jr-bur" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2286" y="-687"/>
+            <point key="canvasLocation" x="1974" y="569"/>
+        </scene>
+        <!--Document Page Collection View Controller-->
+        <scene sceneID="2m9-Z4-0yb">
+            <objects>
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="M3z-2N-0ku" customClass="CPDFDocumentPageCollectionViewController" sceneMemberID="viewController">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="Pfb-bQ-oed">
+                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="TMt-kZ-NEr">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells/>
+                        <connections>
+                            <outlet property="dataSource" destination="M3z-2N-0ku" id="Tb6-Yi-4AR"/>
+                            <outlet property="delegate" destination="M3z-2N-0ku" id="DLq-aD-NhS"/>
+                        </connections>
+                    </collectionView>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <navigationItem key="navigationItem" id="Cct-rC-Tl6"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fOm-Zz-s7N" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2579" y="-1160"/>
         </scene>
         <!--Document Page View Controller-->
         <scene sceneID="gdh-OG-Iak">
@@ -107,7 +134,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2T8-so-arB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3590" y="-714"/>
+            <point key="canvasLocation" x="3670" y="622"/>
         </scene>
         <!--Library Collection View Controller-->
         <scene sceneID="u1A-cy-xaJ">
@@ -140,7 +167,7 @@
                                 </view>
                                 <connections>
                                     <outlet property="imageView" destination="Oyv-4z-Zxr" id="lWR-MH-iqR"/>
-                                    <segue destination="iBO-2b-TLG" kind="push" id="5pL-1n-MBk"/>
+                                    <segue destination="M3z-2N-0ku" kind="push" id="bBq-rN-7B5"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -172,7 +199,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yWs-a0-Vmo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1312" y="-687"/>
+            <point key="canvasLocation" x="896" y="497"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ogc-f8-Hcf">
@@ -195,11 +222,28 @@
         </scene>
     </scenes>
     <classes>
+        <class className="CContentScrollView" superclassName="UIScrollView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CContentScrollView.h"/>
+            <relationships>
+                <relationship kind="outlet" name="contentView" candidateClass="UIView"/>
+            </relationships>
+        </class>
         <class className="CLibraryCollectionViewController" superclassName="UICollectionViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CLibraryCollectionViewController.h"/>
         </class>
         <class className="CLibraryTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CLibraryTableViewController.h"/>
+        </class>
+        <class className="CPDFDocumentPageCollectionViewController" superclassName="UICollectionViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CPDFDocumentPageCollectionViewController.h"/>
+        </class>
+        <class className="CPDFDocumentPageViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CPDFDocumentPageViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="gotoPage:"/>
+                <relationship kind="outlet" name="previewCollectionView" candidateClass="UICollectionView"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="CContentScrollView"/>
+            </relationships>
         </class>
         <class className="CPreviewCollectionViewCell" superclassName="UICollectionViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CPreviewCollectionViewCell.h"/>
@@ -231,7 +275,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="5pL-1n-MBk"/>
-    </inferredMetricsTieBreakers>
 </document>

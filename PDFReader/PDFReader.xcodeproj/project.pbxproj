@@ -36,6 +36,9 @@
 		455699F9155071A5009E52FE /* CPersistentCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699F0155071A5009E52FE /* CPersistentCache.m */; };
 		455699FB155071A5009E52FE /* NSFileManager_BugFixExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699F4155071A5009E52FE /* NSFileManager_BugFixExtensions.m */; };
 		455699FD155071BB009E52FE /* Samples in Resources */ = {isa = PBXBuildFile; fileRef = 455699FC155071BB009E52FE /* Samples */; };
+		45AFDB3A1780DB7B00664807 /* CPDFDocumentPageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AFDB391780DB7B00664807 /* CPDFDocumentPageCollectionViewController.m */; };
+		45AFDB3D1780DC0500664807 /* CDemoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AFDB3C1780DC0500664807 /* CDemoTableViewCell.m */; };
+		45AFDB401780DE7400664807 /* CHostingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AFDB3F1780DE7400664807 /* CHostingCollectionViewCell.m */; };
 		45C25DD6155335AC001BA233 /* CPDFStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C25DD5155335AC001BA233 /* CPDFStream.m */; };
 		45C25DD9155335BD001BA233 /* PDFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C25DD8155335BD001BA233 /* PDFUtilities.m */; };
 		45D9699B1552F8F600338688 /* CPDFAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D9699A1552F8F600338688 /* CPDFAnnotation.m */; };
@@ -94,6 +97,12 @@
 		455699F3155071A5009E52FE /* NSFileManager_BugFixExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSFileManager_BugFixExtensions.h; sourceTree = "<group>"; };
 		455699F4155071A5009E52FE /* NSFileManager_BugFixExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSFileManager_BugFixExtensions.m; sourceTree = "<group>"; };
 		455699FC155071BB009E52FE /* Samples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Samples; sourceTree = "<group>"; };
+		45AFDB381780DB7B00664807 /* CPDFDocumentPageCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFDocumentPageCollectionViewController.h; sourceTree = "<group>"; };
+		45AFDB391780DB7B00664807 /* CPDFDocumentPageCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFDocumentPageCollectionViewController.m; sourceTree = "<group>"; };
+		45AFDB3B1780DC0500664807 /* CDemoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDemoTableViewCell.h; sourceTree = "<group>"; };
+		45AFDB3C1780DC0500664807 /* CDemoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDemoTableViewCell.m; sourceTree = "<group>"; };
+		45AFDB3E1780DE7400664807 /* CHostingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHostingCollectionViewCell.h; sourceTree = "<group>"; };
+		45AFDB3F1780DE7400664807 /* CHostingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHostingCollectionViewCell.m; sourceTree = "<group>"; };
 		45C25DD4155335AC001BA233 /* CPDFStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFStream.h; sourceTree = "<group>"; };
 		45C25DD5155335AC001BA233 /* CPDFStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFStream.m; sourceTree = "<group>"; };
 		45C25DD7155335BD001BA233 /* PDFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFUtilities.h; sourceTree = "<group>"; };
@@ -241,6 +250,8 @@
 			children = (
 				455699C615507141009E52FE /* CPDFDocumentPageViewController.h */,
 				455699C715507141009E52FE /* CPDFDocumentPageViewController.m */,
+				45AFDB381780DB7B00664807 /* CPDFDocumentPageCollectionViewController.h */,
+				45AFDB391780DB7B00664807 /* CPDFDocumentPageCollectionViewController.m */,
 				45D9699D1553058E00338688 /* CPDFPageViewController.h */,
 				45D9699E1553058E00338688 /* CPDFPageViewController.m */,
 				455699CB15507141009E52FE /* CPDFPageView.h */,
@@ -272,6 +283,10 @@
 		455699E6155071A5009E52FE /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				45AFDB3E1780DE7400664807 /* CHostingCollectionViewCell.h */,
+				45AFDB3F1780DE7400664807 /* CHostingCollectionViewCell.m */,
+				45AFDB3B1780DC0500664807 /* CDemoTableViewCell.h */,
+				45AFDB3C1780DC0500664807 /* CDemoTableViewCell.m */,
 				453902391780B39D00C3CC47 /* CPreviewCollectionViewCell.h */,
 				4539023A1780B39D00C3CC47 /* CPreviewCollectionViewCell.m */,
 				455699ED155071A5009E52FE /* CPagingView.h */,
@@ -362,9 +377,11 @@
 				455699D815507141009E52FE /* CPDFDocument_Private.m in Sources */,
 				455699D915507141009E52FE /* CPDFPage.m in Sources */,
 				453902361780A1C800C3CC47 /* CPDFObjectReference.m in Sources */,
+				45AFDB3A1780DB7B00664807 /* CPDFDocumentPageCollectionViewController.m in Sources */,
 				455699DA15507141009E52FE /* CPDFDocumentPageViewController.m in Sources */,
 				455699DD15507141009E52FE /* CPDFPageView.m in Sources */,
 				455699E515507148009E52FE /* Geometry.m in Sources */,
+				45AFDB3D1780DC0500664807 /* CDemoTableViewCell.m in Sources */,
 				455699F8155071A5009E52FE /* CPagingView.m in Sources */,
 				455699F9155071A5009E52FE /* CPersistentCache.m in Sources */,
 				455699FB155071A5009E52FE /* NSFileManager_BugFixExtensions.m in Sources */,
@@ -373,6 +390,7 @@
 				45D969CD1553177800338688 /* CPDFAnnotationView.m in Sources */,
 				45C25DD6155335AC001BA233 /* CPDFStream.m in Sources */,
 				45C25DD9155335BD001BA233 /* PDFUtilities.m in Sources */,
+				45AFDB401780DE7400664807 /* CHostingCollectionViewCell.m in Sources */,
 				45454DF11558429C004AC470 /* CContentScrollView.m in Sources */,
 				45F9FAFA1582D495004D267B /* CFadelessTiledLayer.m in Sources */,
 				45F8A0581780C780008E4412 /* CLibraryCollectionViewController.m in Sources */,
