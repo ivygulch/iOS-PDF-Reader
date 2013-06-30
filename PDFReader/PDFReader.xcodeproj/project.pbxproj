@@ -18,6 +18,7 @@
 		4539023B1780B39D00C3CC47 /* CPreviewCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4539023A1780B39D00C3CC47 /* CPreviewCollectionViewCell.m */; };
 		453902361780A1C800C3CC47 /* CPDFObjectReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 453902351780A1C800C3CC47 /* CPDFObjectReference.m */; };
 		453902381780A61300C3CC47 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453902371780A61300C3CC47 /* Storyboard.storyboard */; };
+		4539023B1780B39D00C3CC47 /* CPreviewCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4539023A1780B39D00C3CC47 /* CPreviewCollectionViewCell.m */; };
 		45454DF11558429C004AC470 /* CContentScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45454DF01558429B004AC470 /* CContentScrollView.m */; };
 		454BF5B41554B92600E7DE1D /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 454BF5B31554B92600E7DE1D /* MediaPlayer.framework */; };
 		455699A915507139009E52FE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4556998D15507139009E52FE /* InfoPlist.strings */; };
@@ -59,6 +60,8 @@
 		453902341780A1C800C3CC47 /* CPDFObjectReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFObjectReference.h; sourceTree = "<group>"; };
 		453902351780A1C800C3CC47 /* CPDFObjectReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFObjectReference.m; sourceTree = "<group>"; };
 		453902371780A61300C3CC47 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
+		453902391780B39D00C3CC47 /* CPreviewCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPreviewCollectionViewCell.h; path = "../PDF UI/CPreviewCollectionViewCell.h"; sourceTree = "<group>"; };
+		4539023A1780B39D00C3CC47 /* CPreviewCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CPreviewCollectionViewCell.m; path = "../PDF UI/CPreviewCollectionViewCell.m"; sourceTree = "<group>"; };
 		45454DEF1558429B004AC470 /* CContentScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CContentScrollView.h; sourceTree = "<group>"; };
 		45454DF01558429B004AC470 /* CContentScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CContentScrollView.m; sourceTree = "<group>"; };
 		454BF5B31554B92600E7DE1D /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -233,8 +236,6 @@
 			children = (
 				455699C615507141009E52FE /* CPDFDocumentViewController.h */,
 				455699C715507141009E52FE /* CPDFDocumentViewController.m */,
-				453902391780B39D00C3CC47 /* CPreviewCollectionViewCell.h */,
-				4539023A1780B39D00C3CC47 /* CPreviewCollectionViewCell.m */,
 				45D9699D1553058E00338688 /* CPDFPageViewController.h */,
 				45D9699E1553058E00338688 /* CPDFPageViewController.m */,
 				455699CB15507141009E52FE /* CPDFPageView.h */,
@@ -266,6 +267,8 @@
 		455699E6155071A5009E52FE /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				453902391780B39D00C3CC47 /* CPreviewCollectionViewCell.h */,
+				4539023A1780B39D00C3CC47 /* CPreviewCollectionViewCell.m */,
 				455699ED155071A5009E52FE /* CPagingView.h */,
 				455699EE155071A5009E52FE /* CPagingView.m */,
 				455699EF155071A5009E52FE /* CPersistentCache.h */,

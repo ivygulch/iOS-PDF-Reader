@@ -156,6 +156,28 @@
     self.previewCollectionView.dataSource = self;
     self.previewCollectionView.delegate = self;
 
+    NSDictionary *theViews = @{
+        @"scrollView": self.scrollView,
+        @"pageView": self.scrollView,
+        };
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[scrollView]-0-|" options:0 metrics:NULL views:theViews]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[scrollView]-0-|" options:0 metrics:NULL views:theViews]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[pageView]-0-|" options:0 metrics:NULL views:theViews]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[pageView]-0-|" options:0 metrics:NULL views:theViews]];
+
+
+    // #########################################################################
+
+//    CGRect theFrame = (CGRect){
+//        .origin = {
+//            .x = CGRectGetMinX(self.view.bounds),
+//            .y = CGRectGetMaxY(self.view.bounds) - 74,
+//            },
+//        .size = {
+//            .width = CGRectGetWidth(self.view.bounds),
+//            .height = 74,
+//            },
+//        };
 
     // #########################################################################
 
@@ -226,7 +248,7 @@
         {
         [UIView animateWithDuration:UINavigationControllerHideShowBarDuration animations:^{
             self.navigationController.navigationBar.alpha = 0.0;
-            self.previewScrollView.alpha = 0.0;
+            self.previewCollectionView.alpha = 0.0;
             } completion:^(BOOL finished) {
             self.chromeHidden = YES;
             }];

@@ -43,6 +43,7 @@
 @property (readwrite, nonatomic, weak) id <CPDFDocumentDelegate> delegate;
 
 @property (readonly, nonatomic, strong) NSString *title;
+@property (readonly, nonatomic, strong) UIImage *coverImage;
 
 - (id)initWithURL:(NSURL *)inURL;
 

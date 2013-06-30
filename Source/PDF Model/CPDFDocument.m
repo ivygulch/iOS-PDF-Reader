@@ -46,6 +46,8 @@
 
 @implementation CPDFDocument
 
+@synthesize coverImage = _coverImage;
+
 - (id)initWithURL:(NSURL *)inURL;
 	{
 	if ((self = [super init]) != NULL)
@@ -90,6 +92,16 @@
     CGPDFDictionaryGetString(theInfo, "Title", &thePDFTitle);
     NSString *theTitle = (__bridge_transfer NSString *)CGPDFStringCopyTextString(thePDFTitle);
     return(theTitle);
+    }
+
+- (UIImage *)coverImage
+    {
+    if (_coverImage == NULL)
+        {
+        CPDFPage *thePage = [self pageForPageNumber:1];
+        _coverImage = thePage.image;
+        }
+    return(_coverImage);
     }
 
 #pragma mark -

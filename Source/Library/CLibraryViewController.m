@@ -149,6 +149,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
     {
     CPDFDocumentViewController *theDestination = segue.destinationViewController;
+    theDestination.magazineMode = NO;
 
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
 
