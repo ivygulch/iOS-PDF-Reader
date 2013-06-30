@@ -127,23 +127,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
+    UITableViewCell *theCell = [tableView dequeueReusableCellWithIdentifier:@"CELL"];
 
     NSURL *theURL = (self.URLs)[indexPath.row];
 
 //    CPDFDocument *theDocument = [[CPDFDocument alloc] initWithURL:theURL];
     NSString *theTitle = [theURL lastPathComponent];
 //    cell.textLabel.text = theDocument.title.length > 0 ? theDocument.title : @"Untitled PDF";
-    cell.textLabel.text = theTitle;
+    theCell.textLabel.text = theTitle;
 
-    // Configure the cell...
-
-    return cell;
+    return theCell;
 }
 
 #pragma mark - Table view delegate
@@ -153,17 +146,19 @@
     return(@"Temporary UI is temporary");
     }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+    {
+    CPDFDocumentViewController *theDestination = segue.destinationViewController;
+
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+
     NSURL *theURL = (self.URLs)[indexPath.row];
-    CPDFDocumentViewController *theViewController = [[CPDFDocumentViewController alloc] initWithURL:theURL];
-    [self.navigationController pushViewController:theViewController animated:YES];
-}
+    theDestination.documentURL = theURL;
+    }
 
 - (void)scanDirectories
     {
     NSFileManager *theFileManager = [NSFileManager defaultManager];
-
 
     NSURL *theDocumentsURL = [[theFileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 
@@ -212,19 +207,19 @@
 
 - (void)applicationDidOpenURL:(NSNotification *)inNotification
     {
-    [self scanDirectories];
-    [self.tableView reloadData];
-
-    NSURL *theURL = [inNotification userInfo][@"URL"];
-    CPDFDocumentViewController *theViewController = [[CPDFDocumentViewController alloc] initWithURL:theURL];
-    if (self.navigationController.topViewController == self)
-        {
-        [self.navigationController pushViewController:theViewController animated:YES];
-        }
-    else
-        {
-        [self.navigationController setViewControllers:@[self, theViewController] animated:YES];
-        }
+//    [self scanDirectories];
+//    [self.tableView reloadData];
+//
+//    NSURL *theURL = [inNotification userInfo][@"URL"];
+//    CPDFDocumentViewController *theViewController = [[CPDFDocumentViewController alloc] initWithURL:theURL];
+//    if (self.navigationController.topViewController == self)
+//        {
+//        [self.navigationController pushViewController:theViewController animated:YES];
+//        }
+//    else
+//        {
+//        [self.navigationController setViewControllers:@[self, theViewController] animated:YES];
+//        }
     }
 
 @end

@@ -44,10 +44,8 @@
 
 @implementation CPDFPage
 
-@synthesize pageNumber = _pageNumber;
 @synthesize cg = _cg;
 @synthesize annotations = _annotations;
-@synthesize mediaBox = _mediaBox;
 
 - (id)initWithDocument:(CPDFDocument *)inDocument pageNumber:(NSInteger)inPageNumber;
 	{
@@ -55,7 +53,6 @@
 		{
         _document = inDocument;
         _pageNumber = inPageNumber;
-        _mediaBox = CGRectNull;
 		}
 	return(self);
 	}

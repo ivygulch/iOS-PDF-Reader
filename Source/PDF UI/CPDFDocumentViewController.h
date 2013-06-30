@@ -38,17 +38,12 @@
 
 @interface CPDFDocumentViewController : UIViewController
 
+@property (readwrite, nonatomic, strong) NSURL *documentURL;
 @property (readwrite, nonatomic, strong) CPDFDocument *document;
 
 @property (readonly, nonatomic, strong) UIPageViewController *pageViewController;
-@property (readonly, nonatomic, strong) IBOutlet CContentScrollView *previewScrollView;
-@property (readonly, nonatomic, strong) IBOutlet CPreviewBar *previewBar;
 @property (readwrite, nonatomic, strong) UIView *backgroundView;
 @property (readwrite, nonatomic, assign) BOOL magazineMode;
-@property (readonly, nonatomic, strong) NSArray *pages;
-@property (readwrite, nonatomic, strong) UIImage *pagePlaceholderImage;
-
-- (id)initWithURL:(NSURL *)inURL;
 
 - (BOOL)openPage:(CPDFPage *)inPage;
 

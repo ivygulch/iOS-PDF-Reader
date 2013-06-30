@@ -221,8 +221,8 @@
     }
 
 - (void)clearCachedThumbnails
-{
+    {
 	[self.cache destroyAllPersistedData];
-}
+    }
 
 @end

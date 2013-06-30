@@ -47,16 +47,6 @@
 
 @implementation CPagingView
 
-@synthesize delegate = _delegate;
-@synthesize dataSource = _dataSource;
-@synthesize currentPageIndex = _currentPageIndex;
-@synthesize previousView = _previousView;
-@synthesize currentView = _currentView;
-@synthesize nextView = _nextView;
-
-@synthesize scrollView = _scrollView;
-@synthesize numberOfPages = _numberOfPages;
-
 - (id)initWithCoder:(NSCoder *)inDecoder
 	{
 	if ((self = [super initWithCoder:inDecoder]) != NULL)

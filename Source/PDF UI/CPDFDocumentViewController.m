@@ -36,19 +36,20 @@
 #import "CPDFDocument.h"
 #import "CPDFPageViewController.h"
 #import "CPDFPage.h"
-#import "CPreviewBar.h"
 #import "CPDFPageView.h"
 #import "CContentScrollView.h"
 #import "Geometry.h"
+#import "CPreviewCollectionViewCell.h"
 
-@interface CPDFDocumentViewController () <CPDFDocumentDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, CPreviewBarDelegate, CPDFPageViewDelegate, UIScrollViewDelegate>
+@interface CPDFDocumentViewController () <CPDFDocumentDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, CPDFPageViewDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (readwrite, nonatomic, strong) UIPageViewController *pageViewController;
 @property (readwrite, nonatomic, strong) IBOutlet CContentScrollView *scrollView;
-@property (readwrite, nonatomic, strong) IBOutlet CContentScrollView *previewScrollView;
-@property (readwrite, nonatomic, strong) IBOutlet CPreviewBar *previewBar;
+@property (readwrite, nonatomic, strong) IBOutlet UICollectionView *previewCollectionView;
 @property (readwrite, nonatomic, assign) BOOL chromeHidden;
 @property (readwrite, nonatomic, strong) NSCache *renderedPageCache;
+@property (readwrite, nonatomic, strong) UIImage *pagePlaceholderImage;
+@property (readonly, nonatomic, strong) NSArray *pages;
 
 - (void)hideChrome;
 - (void)toggleChrome;
@@ -59,11 +60,10 @@
 
 @implementation CPDFDocumentViewController
 
-- (id)initWithDocument:(CPDFDocument *)inDocument
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
     {
-    if ((self = [super initWithNibName:NULL bundle:NULL]) != NULL)
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) != NULL)
         {
-        _document = inDocument;
         _document.delegate = self;
         _renderedPageCache = [[NSCache alloc] init];
         _renderedPageCache.countLimit = 8;
@@ -71,18 +71,15 @@
     return(self);
     }
 
-- (id)initWithURL:(NSURL *)inURL;
-    {
-    CPDFDocument *theDocument = [[CPDFDocument alloc] initWithURL:inURL];
-    return([self initWithDocument:theDocument]);
-    }
-
-- (void)didReceiveMemoryWarning
-    {
-    [super didReceiveMemoryWarning];
-    }
-
 #pragma mark -
+
+- (void)setDocumentURL:(NSURL *)documentURL
+    {
+    _documentURL = documentURL;
+    CPDFDocument *theDocument = [[CPDFDocument alloc] initWithURL:documentURL];
+    self.document = theDocument;
+    }
+
 
 - (void)setBackgroundView:(UIView *)backgroundView
     {
@@ -97,13 +94,14 @@
 
 #pragma mark -
 
-- (void)loadView
+- (void)viewDidLoad
     {
-    [super loadView];
+    [super viewDidLoad];
 
     [self updateTitle];
 
     // #########################################################################
+
     UIPageViewControllerSpineLocation theSpineLocation;
     if ([self canDoubleSpreadForOrientation:self.interfaceOrientation] == YES)
         {
@@ -115,7 +113,8 @@
         }
 
     // #########################################################################
-    NSDictionary *theOptions = @{UIPageViewControllerOptionSpineLocationKey: [NSNumber numberWithInt:theSpineLocation]};
+
+    NSDictionary *theOptions = @{ UIPageViewControllerOptionSpineLocationKey: [NSNumber numberWithInt:theSpineLocation] };
 
     self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:theOptions];
     self.pageViewController.delegate = self;
@@ -131,48 +130,45 @@
 
     [self addChildViewController:self.pageViewController];
 
+    // #########################################################################
+
     self.scrollView = [[CContentScrollView alloc] initWithFrame:self.pageViewController.view.bounds];
-    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     self.scrollView.contentView = self.pageViewController.view;
     self.scrollView.maximumZoomScale = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone ? 8.0 : 4.0;
     self.scrollView.delegate = self;
-    
     [self.scrollView addSubview:self.scrollView.contentView];
-
     [self.view insertSubview:self.scrollView atIndex:0];
+
+
+    NSDictionary *theViews = @{
+        @"scrollView": self.scrollView,
+        @"pageView": self.scrollView,
+
+        };
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[scrollView]-0-|" options:0 metrics:NULL views:theViews]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[scrollView]-0-|" options:0 metrics:NULL views:theViews]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[pageView]-0-|" options:0 metrics:NULL views:theViews]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[pageView]-0-|" options:0 metrics:NULL views:theViews]];
 
     // #########################################################################
 
-    CGRect theFrame = (CGRect){
-        .origin = {
-            .x = CGRectGetMinX(self.view.bounds),
-            .y = CGRectGetMaxY(self.view.bounds) - 74,
-            },
-        .size = {
-            .width = CGRectGetWidth(self.view.bounds),
-            .height = 74,
-            },
-        };
+    self.previewCollectionView.dataSource = self;
+    self.previewCollectionView.delegate = self;
 
-    self.previewScrollView = [[CContentScrollView alloc] initWithFrame:theFrame];
-    self.previewScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    self.previewScrollView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-    self.previewScrollView.contentInset = UIEdgeInsetsMake(5.0f, 0.0f, 5.0f, 0.0f);
-    [self.view addSubview:self.previewScrollView];
 
-    CGRect contentFrame = (CGRect){
-        .size = {
-            .width = theFrame.size.width,
-            .height = 64,
-            },
-    };
-    self.previewBar = [[CPreviewBar alloc] initWithFrame:contentFrame];
-    [self.previewBar addTarget:self action:@selector(gotoPage:) forControlEvents:UIControlEventValueChanged];
-    self.previewBar.delegate = self;
-    [self.previewBar sizeToFit];
+    // #########################################################################
 
-    [self.previewScrollView addSubview:self.previewBar];
-    self.previewScrollView.contentView = self.previewBar;
+//    CGRect theFrame = (CGRect){
+//        .origin = {
+//            .x = CGRectGetMinX(self.view.bounds),
+//            .y = CGRectGetMaxY(self.view.bounds) - 74,
+//            },
+//        .size = {
+//            .width = CGRectGetWidth(self.view.bounds),
+//            .height = 74,
+//            },
+//        };
 
     // #########################################################################
 
@@ -226,22 +222,22 @@
 
 - (void)hideChrome
     {
-        if (self.chromeHidden == NO)
-            {
-            [UIView animateWithDuration:UINavigationControllerHideShowBarDuration animations:^{
-                self.navigationController.navigationBar.alpha = 0.0;
-                self.previewScrollView.alpha = 0.0;
-                } completion:^(BOOL finished) {
-                self.chromeHidden = YES;
-                }];
-            }
+    if (self.chromeHidden == NO)
+        {
+        [UIView animateWithDuration:UINavigationControllerHideShowBarDuration animations:^{
+            self.navigationController.navigationBar.alpha = 0.0;
+            self.previewCollectionView.alpha = 0.0;
+            } completion:^(BOOL finished) {
+            self.chromeHidden = YES;
+            }];
+        }
     }
 
 - (void)toggleChrome
     {
     [UIView animateWithDuration:UINavigationControllerHideShowBarDuration animations:^{
         self.navigationController.navigationBar.alpha = (1.0 - !self.chromeHidden);
-        self.previewScrollView.alpha = (1.0 - !self.chromeHidden);
+        self.previewCollectionView.alpha = (1.0 - !self.chromeHidden);
         } completion:^(BOOL finished) {
         self.chromeHidden = !self.chromeHidden;
         }];
@@ -299,16 +295,16 @@
     // Show fancy shadow if PageViewController view is smaller than parent view
     if (CGRectContainsRect(self.view.frame, self.pageViewController.view.frame) && CGRectEqualToRect(self.view.frame, self.pageViewController.view.frame) == NO)
         {
-            CALayer *theLayer = self.pageViewController.view.layer;
-            theLayer.shadowPath = [[UIBezierPath bezierPathWithRect:self.pageViewController.view.bounds] CGPath];
-            theLayer.shadowRadius = 10.0f;
-            theLayer.shadowColor = [[UIColor blackColor] CGColor];
-            theLayer.shadowOpacity = 0.75f;
-            theLayer.shadowOffset = CGSizeZero;
+        CALayer *theLayer = self.pageViewController.view.layer;
+        theLayer.shadowPath = [[UIBezierPath bezierPathWithRect:self.pageViewController.view.bounds] CGPath];
+        theLayer.shadowRadius = 10.0f;
+        theLayer.shadowColor = [[UIColor blackColor] CGColor];
+        theLayer.shadowOpacity = 0.75f;
+        theLayer.shadowOffset = CGSizeZero;
         }
     else
         {
-            self.pageViewController.view.layer.shadowOpacity = 0.0f;
+        self.pageViewController.view.layer.shadowOpacity = 0.0f;
         }
     }
 
@@ -345,7 +341,6 @@
     thePageViewController.pagePlaceholderImage = self.pagePlaceholderImage;
     // Force load the view.
     [thePageViewController view];
-//    NSParameterAssert(thePageViewController.pageView != NULL);
     thePageViewController.pageView.delegate = self;
     thePageViewController.pageView.renderedPageCache = self.renderedPageCache;
     return(thePageViewController);
@@ -403,16 +398,16 @@
 
 - (IBAction)gotoPage:(id)sender
     {
-    NSUInteger thePageNumber = [self.previewBar.selectedPreviewIndexes firstIndex] + 1;
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
-        {
-        thePageNumber = thePageNumber / 2 * 2;
-        }
-
-    NSUInteger theLength = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? 1 : ( thePageNumber < self.document.numberOfPages ? 2 : 1 );
-    self.previewBar.selectedPreviewIndexes = [NSIndexSet indexSetWithIndexesInRange:(NSRange){ .location = thePageNumber - 1, .length = theLength }];
-
-    [self openPage:[self.document pageForPageNumber:thePageNumber]];
+//    NSUInteger thePageNumber = [self.previewBar.selectedPreviewIndexes firstIndex] + 1;
+//    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+//        {
+//        thePageNumber = thePageNumber / 2 * 2;
+//        }
+//
+//    NSUInteger theLength = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? 1 : ( thePageNumber < self.document.numberOfPages ? 2 : 1 );
+//    self.previewBar.selectedPreviewIndexes = [NSIndexSet indexSetWithIndexesInRange:(NSRange){ .location = thePageNumber - 1, .length = theLength }];
+//
+//    [self openPage:[self.document pageForPageNumber:thePageNumber]];
     }
 
 - (void)populateCache
@@ -525,7 +520,10 @@
                 [theIndexSet addIndex:N];
                 }
             }
-        self.previewBar.selectedPreviewIndexes = theIndexSet;
+//        self.previewBar.selectedPreviewIndexes = theIndexSet;
+        [theIndexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            [self.previewCollectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:idx inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionCenteredHorizontally];
+            }];
         }
     }
 
@@ -568,22 +566,30 @@
 
 #pragma mark -
 
-- (NSInteger)numberOfPreviewsInPreviewBar:(CPreviewBar *)inPreviewBar
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
     {
     return(self.document.numberOfPages);
     }
 
-- (UIImage *)previewBar:(CPreviewBar *)inPreviewBar previewAtIndex:(NSInteger)inIndex;
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
     {
-    UIImage *theImage = [self.document pageForPageNumber:inIndex + 1].thumbnail;
-    return(theImage);
+    CPreviewCollectionViewCell *theCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CELL" forIndexPath:indexPath];
+    UIImage *theImage = [self.document pageForPageNumber:indexPath.item + 1].thumbnail;
+    theCell.imageView.image = theImage;
+    return(theCell);
+    }
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+    {
+    CPDFPage *thePage = [self.document pageForPageNumber:indexPath.item + 1];
+    [self openPage:thePage];
     }
 
 #pragma mark -
 
 - (void)PDFDocument:(CPDFDocument *)inDocument didUpdateThumbnailForPage:(CPDFPage *)inPage
     {
-    [self.previewBar updatePreviewAtIndex:inPage.pageNumber - 1];
+    [self.previewCollectionView reloadItemsAtIndexPaths:@[ [NSIndexPath indexPathForItem:inPage.pageNumber - 1 inSection:0] ]];
     }
 
 #pragma mark -

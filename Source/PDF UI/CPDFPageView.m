@@ -60,7 +60,7 @@
         {
         self.contentMode = UIViewContentModeRedraw;
 
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor grayColor];
         self.opaque = YES;
 
         CATiledLayer *tempTiledLayer = (CATiledLayer *)self.layer;
@@ -82,7 +82,7 @@
         {
         self.contentMode = UIViewContentModeRedraw;
 
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor grayColor];
         self.opaque = YES;
 
         CATiledLayer *tempTiledLayer = (CATiledLayer *)self.layer;
@@ -94,6 +94,9 @@
         [self addGestureRecognizer:theTapGestureRecognizer];
 
         self.userInteractionEnabled = YES;
+
+//        self.layer.borderColor = [UIColor redColor].CGColor;
+//        self.layer.borderWidth = 2.0;
         }
     return(self);
     }
@@ -110,10 +113,6 @@
         }
     }
 
-- (void)drawRect:(CGRect)rect
-    {
-    }
-
 -(void)drawLayer:(CALayer*)layer inContext:(CGContextRef)context
     {
     CGContextSaveGState(context);
@@ -126,7 +125,7 @@
 
     CGContextDrawPDFPage(context, self.page.cg);
 
-#if 0
+#if 1
 	CGContextSetRGBStrokeColor(context, 1.0,0.0,0.0,1.0);
     CGContextSetLineWidth(context, 0.5);
     CGContextStrokeRect(context, CGPDFPageGetBoxRect(self.page.cg, kCGPDFCropBox));

@@ -47,13 +47,6 @@
 
 @implementation CPersistentCache
 
-@synthesize name = _name;
-@synthesize converterBlock = _converterBlock;
-@synthesize reverseConverterBlock = _reverseConverterBlock;
-
-@synthesize cache = _cache;
-@synthesize URL = _URL;
-
 - (id)initWithName:(NSString *)inName
 	{
 	if ((self = [super init]) != NULL)
