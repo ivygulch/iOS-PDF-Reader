@@ -33,4 +33,8 @@
 
 @interface CLibrary : NSObject
 
+@property (readwrite, nonatomic, strong) NSArray *URLs;
+
+- (void)scanDirectories;
+
 @end

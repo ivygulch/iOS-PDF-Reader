@@ -115,27 +115,44 @@
 
 -(void)drawLayer:(CALayer*)layer inContext:(CGContextRef)context
     {
+    UIGraphicsPushContext(context);
+
     CGContextSaveGState(context);
 
-    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+//    CGRect theImageBox = CGPDFPageGetBoxRect(self.page.cg, kCGPDFCropBox);
+
+//    const CGRect theRenderRect = ScaleAndAlignRectToRect(theImageBox, (CGRect){ .size = self.bounds.size }, ImageScaling_Proportionally, ImageAlignment_Center);
+
+    // Fill just the render rect with white.
+    [[UIColor whiteColor] set];
     CGContextFillRect(context, self.bounds);
+
+//    // Flip the context so that the PDF page is rendered right side up.
+//	CGContextTranslateCTM(context, 0.0, self.bounds.size.height);
+//	CGContextScaleCTM(context, 1.0, -1.0);
+//
+//	// Scale the context so that the PDF page is rendered at the correct size for the zoom level.
+//    CGContextTranslateCTM(context, -(theImageBox.origin.x - theRenderRect.origin.x), -(theImageBox.origin.y - theRenderRect.origin.y));
+//	CGContextScaleCTM(context, theRenderRect.size.width / theImageBox.size.width, theRenderRect.size.height / theImageBox.size.height);
 
     CGAffineTransform theTransform = [self PDFTransform];
     CGContextConcatCTM(context, theTransform);
 
-    CGContextDrawPDFPage(context, self.page.cg);
+	CGContextDrawPDFPage(context, self.page.cg);
+
 
 #if 1
-	CGContextSetRGBStrokeColor(context, 1.0,0.0,0.0,1.0);
-    CGContextSetLineWidth(context, 0.5);
+
+    [[UIColor redColor] set];
+    CGContextSetLineWidth(context, 2);
     CGContextStrokeRect(context, CGPDFPageGetBoxRect(self.page.cg, kCGPDFCropBox));
 
-	CGContextSetRGBStrokeColor(context, 0.0,1.0,0.0,1.0);
-    CGContextSetLineWidth(context, 0.5);
+    [[UIColor greenColor] set];
+    CGContextSetLineWidth(context, 2);
     CGContextStrokeRect(context, CGPDFPageGetBoxRect(self.page.cg, kCGPDFBleedBox));
 
-	CGContextSetRGBStrokeColor(context, 0.0,0.0,0.0,1.0);
-    CGContextSetLineWidth(context, 0.5);
+    [[UIColor blueColor] set];
+    CGContextSetLineWidth(context, 2);
     CGContextStrokeRect(context, CGPDFPageGetBoxRect(self.page.cg, kCGPDFMediaBox));
 #endif
 
@@ -148,6 +165,8 @@
 #endif
 
     CGContextRestoreGState(context);
+
+    UIGraphicsPopContext();
     }
 
 #pragma mark -
@@ -198,13 +217,13 @@
 
 - (CGAffineTransform)PDFTransform
     {
-    const CGRect theMediaBox = self.page.mediaBox;
-    CGRect theRenderRect = ScaleAndAlignRectToRect(theMediaBox, self.bounds, ImageScaling_Proportionally, ImageAlignment_Center);
+    const CGRect theBox = [self.page rectForBox:kCGPDFCropBox];
+    CGRect theRenderRect = ScaleAndAlignRectToRect(theBox, self.bounds, ImageScaling_Proportionally, ImageAlignment_Center);
     theRenderRect = CGRectIntegral(theRenderRect);
     CGAffineTransform theTransform = CGAffineTransformMakeTranslation(0, self.bounds.size.height);
     theTransform = CGAffineTransformScale(theTransform, 1.0, -1.0);
-    theTransform = CGAffineTransformTranslate(theTransform, -(theMediaBox.origin.x - theRenderRect.origin.x), -(theMediaBox.origin.y - theRenderRect.origin.y));
-    theTransform = CGAffineTransformScale(theTransform, theRenderRect.size.width / theMediaBox.size.width, theRenderRect.size.height / theMediaBox.size.height);
+    theTransform = CGAffineTransformTranslate(theTransform, -(theBox.origin.x - theRenderRect.origin.x), -(theBox.origin.y - theRenderRect.origin.y));
+    theTransform = CGAffineTransformScale(theTransform, theRenderRect.size.width / theBox.size.width, theRenderRect.size.height / theBox.size.height);
     return(theTransform);
     }
 

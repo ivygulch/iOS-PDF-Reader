@@ -29,7 +29,7 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of Jonathan Wight.
 
-#import "CPDFDocumentViewController.h"
+#import "CPDFDocumentPageViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -41,13 +41,12 @@
 #import "Geometry.h"
 #import "CPreviewCollectionViewCell.h"
 
-@interface CPDFDocumentViewController () <CPDFDocumentDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, CPDFPageViewDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface CPDFDocumentPageViewController () <CPDFDocumentDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, CPDFPageViewDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (readwrite, nonatomic, strong) UIPageViewController *pageViewController;
 @property (readwrite, nonatomic, strong) IBOutlet CContentScrollView *scrollView;
 @property (readwrite, nonatomic, strong) IBOutlet UICollectionView *previewCollectionView;
 @property (readwrite, nonatomic, assign) BOOL chromeHidden;
-@property (readwrite, nonatomic, strong) NSCache *renderedPageCache;
 @property (readwrite, nonatomic, strong) UIImage *pagePlaceholderImage;
 @property (readonly, nonatomic, strong) NSArray *pages;
 
@@ -58,15 +57,13 @@
 - (CPDFPageViewController *)pageViewControllerWithPage:(CPDFPage *)inPage;
 @end
 
-@implementation CPDFDocumentViewController
+@implementation CPDFDocumentPageViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
     {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) != NULL)
         {
         _document.delegate = self;
-        _renderedPageCache = [[NSCache alloc] init];
-        _renderedPageCache.countLimit = 8;
         }
     return(self);
     }
@@ -213,7 +210,7 @@
     double delayInSeconds = 1.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self populateCache];
+//        [self populateCache];
         [self.document startGeneratingThumbnails];
         });
     }
@@ -238,8 +235,6 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
     {
     [self updateTitle];
-    [self.renderedPageCache removeAllObjects];
-    [self populateCache];
     }
 
 - (void)hideChrome
@@ -299,15 +294,15 @@
     {
     CGRect theBounds = self.view.bounds;
     CGRect theFrame;
-    CGRect theMediaBox = [self.document pageForPageNumber:1].mediaBox;
+    CGRect theBox = [[self.document pageForPageNumber:1] rectForBox:kCGPDFCropBox];
     if ([self canDoubleSpreadForOrientation:inOrientation] == YES)
         {
-        theMediaBox.size.width *= 2;
-        theFrame = ScaleAndAlignRectToRect(theMediaBox, theBounds, ImageScaling_Proportionally, ImageAlignment_Center);
+        theBox.size.width *= 2;
+        theFrame = ScaleAndAlignRectToRect(theBox, theBounds, ImageScaling_Proportionally, ImageAlignment_Center);
         }
     else
         {
-        theFrame = ScaleAndAlignRectToRect(theMediaBox, theBounds, ImageScaling_Proportionally, ImageAlignment_Center);
+        theFrame = ScaleAndAlignRectToRect(theBox, theBounds, ImageScaling_Proportionally, ImageAlignment_Center);
         }
 
     theFrame = CGRectIntegral(theFrame);
@@ -360,11 +355,9 @@
 - (CPDFPageViewController *)pageViewControllerWithPage:(CPDFPage *)inPage
     {
     CPDFPageViewController *thePageViewController = [[CPDFPageViewController alloc] initWithPage:inPage];
-    thePageViewController.pagePlaceholderImage = self.pagePlaceholderImage;
     // Force load the view.
     [thePageViewController view];
     thePageViewController.pageView.delegate = self;
-    thePageViewController.pageView.renderedPageCache = self.renderedPageCache;
     return(thePageViewController);
     }
 
@@ -395,7 +388,7 @@
     [self.pageViewController setViewControllers:theViewControllers direction:theDirection animated:YES completion:NULL];
     [self updateTitle];
     
-    [self populateCache];
+//    [self populateCache];
 
     return(YES);
     }
@@ -432,50 +425,50 @@
 //    [self openPage:[self.document pageForPageNumber:thePageNumber]];
     }
 
-- (void)populateCache
-    {
-//    NSLog(@"POPULATING CACHE")
-
-    CPDFPage *theStartPage = (self.pages)[0] != [NSNull null] ? (self.pages)[0] : NULL;
-    CPDFPage *theLastPage = [self.pages lastObject] != [NSNull null] ? [self.pages lastObject] : NULL;
-
-    NSInteger theStartPageNumber = [theStartPage pageNumber];
-    NSInteger theLastPageNumber = [theLastPage pageNumber];
-        
-    NSInteger pageSpanToLoad = 1;
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
-        {
-        pageSpanToLoad = 2;
-        }
-
-    theStartPageNumber = MAX(theStartPageNumber - pageSpanToLoad, 0);
-    theLastPageNumber = MIN(theLastPageNumber + pageSpanToLoad, self.document.numberOfPages);
-
-//    NSLog(@"(Potentially) Fetching: %d - %d", theStartPageNumber, theLastPageNumber);
-
-    UIView *thePageView = [(self.pageViewController.viewControllers)[0] pageView];
-    if (thePageView == NULL)
-        {
-        NSLog(@"WARNING: No page view.");
-        return;
-        }
-    CGRect theBounds = thePageView.bounds;
-
-    for (NSInteger thePageNumber = theStartPageNumber; thePageNumber <= theLastPageNumber; ++thePageNumber)
-        {
-        NSString *theKey = [NSString stringWithFormat:@"%d[%d,%d]", thePageNumber, (int)theBounds.size.width, (int)theBounds.size.height];
-        if ([self.renderedPageCache objectForKey:theKey] == NULL)
-            {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                UIImage *theImage = [[self.document pageForPageNumber:thePageNumber] imageWithSize:theBounds.size scale:[UIScreen mainScreen].scale];
-                if (theImage != NULL)
-                    {
-                    [self.renderedPageCache setObject:theImage forKey:theKey];
-                    }
-                });
-            }
-        }
-    }
+//- (void)populateCache
+//    {
+////    NSLog(@"POPULATING CACHE")
+//
+//    CPDFPage *theStartPage = (self.pages)[0] != [NSNull null] ? (self.pages)[0] : NULL;
+//    CPDFPage *theLastPage = [self.pages lastObject] != [NSNull null] ? [self.pages lastObject] : NULL;
+//
+//    NSInteger theStartPageNumber = [theStartPage pageNumber];
+//    NSInteger theLastPageNumber = [theLastPage pageNumber];
+//        
+//    NSInteger pageSpanToLoad = 1;
+//    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+//        {
+//        pageSpanToLoad = 2;
+//        }
+//
+//    theStartPageNumber = MAX(theStartPageNumber - pageSpanToLoad, 0);
+//    theLastPageNumber = MIN(theLastPageNumber + pageSpanToLoad, self.document.numberOfPages);
+//
+////    NSLog(@"(Potentially) Fetching: %d - %d", theStartPageNumber, theLastPageNumber);
+//
+//    UIView *thePageView = [(self.pageViewController.viewControllers)[0] pageView];
+//    if (thePageView == NULL)
+//        {
+//        NSLog(@"WARNING: No page view.");
+//        return;
+//        }
+//    CGRect theBounds = thePageView.bounds;
+//
+//    for (NSInteger thePageNumber = theStartPageNumber; thePageNumber <= theLastPageNumber; ++thePageNumber)
+//        {
+//        NSString *theKey = [NSString stringWithFormat:@"%d[%d,%d]", thePageNumber, (int)theBounds.size.width, (int)theBounds.size.height];
+//        if ([self.renderedPageCache objectForKey:theKey] == NULL)
+//            {
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//                UIImage *theImage = [[self.document pageForPageNumber:thePageNumber] imageForBox:kCGPDFCropBox withSize:theBounds.size scale:[UIScreen mainScreen].scale];
+//                if (theImage != NULL)
+//                    {
+//                    [self.renderedPageCache setObject:theImage forKey:theKey];
+//                    }
+//                });
+//            }
+//        }
+//    }
 
 #pragma mark -
 
@@ -526,7 +519,7 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed;
     {
     [self updateTitle];
-    [self populateCache];
+//    [self populateCache];
     [self hideChrome];
 
     CPDFPageViewController *theFirstViewController = (self.pageViewController.viewControllers)[0];
@@ -596,7 +589,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
     {
     CPreviewCollectionViewCell *theCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CELL" forIndexPath:indexPath];
-    UIImage *theImage = [self.document pageForPageNumber:indexPath.item + 1].thumbnail;
+    UIImage *theImage = [[self.document pageForPageNumber:indexPath.item + 1] imageForBox:kCGPDFCropBox withSize:(CGSize)theCell.imageView.bounds.size scale:0.0];
     theCell.imageView.image = theImage;
     return(theCell);
     }

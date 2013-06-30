@@ -76,34 +76,47 @@
     return(CGPDFPageGetBoxRect(self.cg, kCGPDFMediaBox));
     }
 
-- (UIImage *)image
+- (CGRect)cropBox
     {
-    UIImage *theImage = [self.document.cache objectForKey:@"image"];
-    if (theImage == NULL)
-        {
-        UIGraphicsBeginImageContext(self.mediaBox.size);
-
-        CGContextRef theContext = UIGraphicsGetCurrentContext();
-
-        CGContextSaveGState(theContext);
-
-        // Flip the context so that the PDF page is rendered right side up.
-        CGContextScaleCTM(theContext, 1.0, -1.0);
-        CGContextDrawPDFPage(theContext, self.cg);
-
-        theImage = UIGraphicsGetImageFromCurrentImageContext();
-
-        UIGraphicsEndImageContext();
-
-        [self.document.cache setObject:theImage forKey:@"image" cost:(NSUInteger)ceil(theImage.size.width * theImage.size.height)];
-        }
-
-    return(theImage);
+    return(CGPDFPageGetBoxRect(self.cg, kCGPDFCropBox));
     }
 
-- (UIImage *)imageWithSize:(CGSize)inSize scale:(CGFloat)inScale
+- (CGRect)bleedBox
     {
-    NSParameterAssert(inSize.width > 0 && inSize.height > 0);
+    return(CGPDFPageGetBoxRect(self.cg, kCGPDFBleedBox));
+    }
+
+- (CGRect)trimBox
+    {
+    return(CGPDFPageGetBoxRect(self.cg, kCGPDFTrimBox));
+    }
+
+- (CGRect)artBox
+    {
+    return(CGPDFPageGetBoxRect(self.cg, kCGPDFArtBox));
+    }
+
+- (CGRect)rectForBox:(CGPDFBox)inBox;
+    {
+    CGRect theBox = CGPDFPageGetBoxRect(self.cg, inBox);
+    return theBox;
+    }
+    
+- (UIImage *)imageForBox:(CGPDFBox)inBox withSize:(CGSize)inSize scale:(CGFloat)inScale
+    {
+    CGRect theImageBox = CGPDFPageGetBoxRect(self.cg, inBox);
+    if (CGSizeEqualToSize(inSize, CGSizeZero))
+        {
+        inSize = theImageBox.size;
+        }
+
+    NSString *theKey = [NSString stringWithFormat:@"PageImage_%d_%d_%f_%f_%f", self.pageNumber, inBox, inSize.width, inSize.height, inScale];
+    NSLog(@"%@", theKey);
+    UIImage *theImage = [self.document.cache objectForKey:theKey];
+    if (theImage != NULL)
+        {
+        return(theImage);
+        }
 
     UIGraphicsBeginImageContextWithOptions(inSize, NO, inScale);
 
@@ -111,8 +124,9 @@
 
 	CGContextSaveGState(theContext);
 
-    const CGRect theMediaBox = self.mediaBox;
-    const CGRect theRenderRect = ScaleAndAlignRectToRect(theMediaBox, (CGRect){ .size = inSize }, ImageScaling_Proportionally, ImageAlignment_Center);
+
+
+    const CGRect theRenderRect = ScaleAndAlignRectToRect(theImageBox, (CGRect){ .size = inSize }, ImageScaling_Proportionally, ImageAlignment_Center);
 
     // Fill just the render rect with white.
     CGContextSetRGBFillColor(theContext, 1.0,1.0,1.0,1.0);
@@ -123,40 +137,20 @@
 	CGContextScaleCTM(theContext, 1.0, -1.0);
 
 	// Scale the context so that the PDF page is rendered at the correct size for the zoom level.
-    CGContextTranslateCTM(theContext, -(theMediaBox.origin.x - theRenderRect.origin.x), -(theMediaBox.origin.y - theRenderRect.origin.y));
-	CGContextScaleCTM(theContext, theRenderRect.size.width / theMediaBox.size.width, theRenderRect.size.height / theMediaBox.size.height);
+    CGContextTranslateCTM(theContext, -(theImageBox.origin.x - theRenderRect.origin.x), -(theImageBox.origin.y - theRenderRect.origin.y));
+	CGContextScaleCTM(theContext, theRenderRect.size.width / theImageBox.size.width, theRenderRect.size.height / theImageBox.size.height);
 
 	CGContextDrawPDFPage(theContext, self.cg);
 
-    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    theImage = UIGraphicsGetImageFromCurrentImageContext();
 
     UIGraphicsEndImageContext();
 
+    [self.document.cache setObject:theImage forKey:theKey];
+
     return(theImage);
     }
 
-- (UIImage *)thumbnail
-    {
-    NSString *theKey = [NSString stringWithFormat:@"page_%d_image_128x128", self.pageNumber];
-    UIImage *theImage = [self.document.cache objectForKey:theKey];
-    return(theImage);
-    }
-
-- (UIImage *)preview
-    {
-    NSString *theKey = [NSString stringWithFormat:@"page_%d_image_preview2", self.pageNumber];
-    UIImage *theImage = [self.document.cache objectForKey:theKey];
-    if (theImage == NULL)
-        {
-        CGSize theSize = self.mediaBox.size;
-        theSize.width *= 0.5;
-        theSize.height *= 0.5;
-
-        theImage = [self imageWithSize:theSize scale:[UIScreen mainScreen].scale];
-        [self.document.cache setObject:theImage forKey:theKey];
-        }
-    return(theImage);
-    }
 
 - (NSArray *)annotations
     {

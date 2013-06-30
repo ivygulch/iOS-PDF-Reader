@@ -99,7 +99,7 @@
     if (_coverImage == NULL)
         {
         CPDFPage *thePage = [self pageForPageNumber:1];
-        _coverImage = thePage.image;
+        _coverImage = [thePage imageForBox:kCGPDFCropBox withSize:CGSizeZero scale:1.0];
         }
     return(_coverImage);
     }
@@ -199,7 +199,7 @@
                 {
                 @autoreleasepool
                     {
-                    UIImage *theImage = [thePage imageWithSize:(CGSize){ 128, 128 } scale:[UIScreen mainScreen].scale];
+                    UIImage *theImage = [thePage imageForBox:kCGPDFCropBox withSize:(CGSize){ 128, 128 } scale:[UIScreen mainScreen].scale];
                     [self.cache setObject:theImage forKey:theKey];
                     }
                 }
@@ -209,11 +209,11 @@
                 {
                 @autoreleasepool
                     {
-                    CGSize theSize = thePage.mediaBox.size;
+                    CGSize theSize = [thePage rectForBox:kCGPDFCropBox].size;
                     theSize.width *= 0.5;
                     theSize.height *= 0.5;
 
-                    UIImage *theImage = [thePage imageWithSize:theSize scale:[UIScreen mainScreen].scale];
+                    UIImage *theImage = [thePage imageForBox:kCGPDFCropBox withSize:theSize scale:[UIScreen mainScreen].scale];
                     [self.cache setObject:theImage forKey:theKey];
                     }
                 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4457.9" systemVersion="13A497d" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="dDX-Wh-ucU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4457.9" systemVersion="13A497d" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="eq7-rZ-PPG">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <development version="5000" identifier="xcode"/>
@@ -47,12 +47,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="95U-Jr-bur" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1312" y="-687"/>
+            <point key="canvasLocation" x="2286" y="-687"/>
         </scene>
-        <!--Document View Controller-->
+        <!--Document Page View Controller-->
         <scene sceneID="gdh-OG-Iak">
             <objects>
-                <viewController wantsFullScreenLayout="YES" extendedLayoutIncludesOpaqueBars="YES" id="iBO-2b-TLG" customClass="CPDFDocumentViewController" sceneMemberID="viewController">
+                <viewController wantsFullScreenLayout="YES" extendedLayoutIncludesOpaqueBars="YES" id="iBO-2b-TLG" customClass="CPDFDocumentPageViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oYx-rB-afY">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -107,7 +107,53 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2T8-so-arB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2616" y="-714"/>
+            <point key="canvasLocation" x="3590" y="-714"/>
+        </scene>
+        <!--Library Collection View Controller-->
+        <scene sceneID="u1A-cy-xaJ">
+            <objects>
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" extendedLayoutIncludesOpaqueBars="YES" id="SP0-69-bBj" customClass="CLibraryCollectionViewController" sceneMemberID="viewController">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="gbZ-nM-ulq">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="NRk-wb-tTq">
+                            <size key="itemSize" width="268" height="268"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CELL" id="Vnv-Ii-ocm" customClass="CPreviewCollectionViewCell">
+                                <rect key="frame" x="0.0" y="64" width="268" height="268"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="268" height="268"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oyv-4z-Zxr">
+                                            <rect key="frame" x="0.0" y="0.0" width="268" height="268"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="imageView" destination="Oyv-4z-Zxr" id="lWR-MH-iqR"/>
+                                    <segue destination="iBO-2b-TLG" kind="push" id="5pL-1n-MBk"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="SP0-69-bBj" id="Yo3-zB-vVA"/>
+                            <outlet property="delegate" destination="SP0-69-bBj" id="7Iy-ej-RVG"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" id="WzC-rN-P9Z"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HY6-Nr-KgQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1200" y="-1368"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0XC-I3-UlS">
@@ -126,23 +172,34 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yWs-a0-Vmo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="338" y="-687"/>
+            <point key="canvasLocation" x="1312" y="-687"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ogc-f8-Hcf">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eq7-rZ-PPG" sceneMemberID="viewController">
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HXS-so-7Hf">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="SP0-69-bBj" kind="relationship" relationship="rootViewController" id="POD-Ol-Nh4"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qxz-zh-ZQw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="226" y="-1368"/>
         </scene>
     </scenes>
     <classes>
-        <class className="CContentScrollView" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CContentScrollView.h"/>
-            <relationships>
-                <relationship kind="outlet" name="contentView" candidateClass="UIView"/>
-            </relationships>
+        <class className="CLibraryCollectionViewController" superclassName="UICollectionViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CLibraryCollectionViewController.h"/>
         </class>
-        <class className="CPDFDocumentViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CPDFDocumentViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="gotoPage:"/>
-                <relationship kind="outlet" name="previewCollectionView" candidateClass="UICollectionView"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="CContentScrollView"/>
-            </relationships>
+        <class className="CLibraryTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CLibraryTableViewController.h"/>
         </class>
         <class className="CPreviewCollectionViewCell" superclassName="UICollectionViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CPreviewCollectionViewCell.h"/>
@@ -159,6 +216,9 @@
         <class className="UICollectionViewCell" superclassName="UICollectionReusableView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewCell.h"/>
         </class>
+        <class className="UICollectionViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewController.h"/>
+        </class>
         <class className="UICollectionViewFlowLayout" superclassName="UICollectionViewLayout">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewFlowLayout.h"/>
         </class>
@@ -171,4 +231,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="5pL-1n-MBk"/>
+    </inferredMetricsTieBreakers>
 </document>

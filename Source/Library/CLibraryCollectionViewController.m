@@ -29,17 +29,20 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of Jonathan Wight.
 
-#import "CLibraryTableViewController.h"
+#import "CLibraryCollectionViewController.h"
 
 #import "CPDFDocumentPageViewController.h"
 #import "NSFileManager_BugFixExtensions.h"
 #import "CPDFDocument.h"
 #import "CLibrary.h"
+#import "CPreviewCollectionViewCell.h"
 
-@interface CLibraryTableViewController ()
+@interface CLibraryCollectionViewController ()
 @end
 
-@implementation CLibraryTableViewController
+#pragma mark -
+
+@implementation CLibraryCollectionViewController
 
 - (void)viewDidLoad
     {
@@ -52,7 +55,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidOpenURL:) name:@"applicationDidOpenURL" object:NULL];
 
     [self.library scanDirectories];
-    [self.tableView reloadData];
+    [self.collectionView reloadData];
     }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -62,36 +65,30 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
     {
     return([self.library.URLs count]);
     }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
     {
-    UITableViewCell *theCell = [tableView dequeueReusableCellWithIdentifier:@"CELL"];
+    NSURL *theURL = self.library.URLs[indexPath.item];
+    CPDFDocument *theDocument = [[CPDFDocument alloc] initWithURL:theURL];
 
-    NSURL *theURL = (self.library. URLs)[indexPath.row];
-
-    NSString *theTitle = [theURL lastPathComponent];
-    theCell.textLabel.text = theTitle;
-
-    return theCell;
+    CPreviewCollectionViewCell *theCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CELL" forIndexPath:indexPath];
+    UIImage *theImage = theDocument.coverImage;
+    theCell.imageView.image = theImage;
+    return(theCell);
     }
 
 #pragma mark - Table view delegate
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)inSection
-    {
-    return(@"Temporary UI is temporary");
-    }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
     {
     CPDFDocumentPageViewController *theDestination = segue.destinationViewController;
     theDestination.magazineMode = NO;
 
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
 
     NSURL *theURL = (self.library.URLs)[indexPath.row];
     theDestination.documentURL = theURL;

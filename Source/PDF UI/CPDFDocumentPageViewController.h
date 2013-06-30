@@ -1,8 +1,8 @@
 //
-//  CLibraryViewController.h
+//  iOS-PDF-ReaderViewController.h
 //  iOS-PDF-Reader
 //
-//  Created by Jonathan Wight on 05/31/11.
+//  Created by Jonathan Wight on 02/19/11.
 //  Copyright 2012 Jonathan Wight. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are
@@ -31,10 +31,20 @@
 
 #import <UIKit/UIKit.h>
 
-@class CLibrary;
+@class CPDFDocument;
+@class CContentScrollView;
+@class CPreviewBar;
+@class CPDFPage;
 
-@interface CLibraryTableViewController : UITableViewController
+@interface CPDFDocumentPageViewController : UIViewController
 
-@property (readwrite, nonatomic, strong) CLibrary *library;
+@property (readwrite, nonatomic, strong) NSURL *documentURL;
+@property (readwrite, nonatomic, strong) CPDFDocument *document;
+
+@property (readonly, nonatomic, strong) UIPageViewController *pageViewController;
+@property (readwrite, nonatomic, strong) UIView *backgroundView;
+@property (readwrite, nonatomic, assign) BOOL magazineMode;
+
+- (BOOL)openPage:(CPDFPage *)inPage;
 
 @end

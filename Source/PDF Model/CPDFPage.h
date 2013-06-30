@@ -39,14 +39,10 @@
 @property (readonly, nonatomic, assign) NSInteger pageNumber;
 @property (readonly, nonatomic, strong) __attribute__((NSObject)) CGPDFPageRef cg;
 @property (readonly, nonatomic, strong) NSArray *annotations;
-@property (readonly, nonatomic, assign) CGRect mediaBox;
 
 - (id)initWithDocument:(CPDFDocument *)inDocument pageNumber:(NSInteger)inPageNumber;
 
-- (UIImage *)image;
-- (UIImage *)imageWithSize:(CGSize)inSize scale:(CGFloat)inScale;
-
-- (UIImage *)thumbnail;
-- (UIImage *)preview;
+- (CGRect)rectForBox:(CGPDFBox)inBox;
+- (UIImage *)imageForBox:(CGPDFBox)inBox withSize:(CGSize)inSize scale:(CGFloat)inScale;
 
 @end

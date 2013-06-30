@@ -31,6 +31,59 @@
 
 #import "CLibrary.h"
 
+#import "CPDFDocumentPageViewController.h"
+#import "NSFileManager_BugFixExtensions.h"
+#import "CPDFDocument.h"
+
 @implementation CLibrary
+
+- (void)scanDirectories
+    {
+    NSFileManager *theFileManager = [NSFileManager defaultManager];
+
+    NSURL *theDocumentsURL = [[theFileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+
+    NSURL *theInboxURL = [theDocumentsURL URLByAppendingPathComponent:@"Inbox"];
+    NSError *theError = NULL;
+    NSEnumerator *theEnumerator = NULL;
+    id theErrorHandler = ^(NSURL *url, NSError *error) { NSLog(@"ERROR: %@", error); return(YES); };
+
+    if ([theFileManager fileExistsAtPath:theInboxURL.path])
+        {
+        for (NSURL *theURL in [theFileManager tx_enumeratorAtURL:theInboxURL includingPropertiesForKeys:NULL options:0 errorHandler:theErrorHandler])
+            {
+            NSURL *theDestinationURL = [theDocumentsURL URLByAppendingPathComponent:[theURL lastPathComponent]];
+            BOOL theResult = [theFileManager moveItemAtURL:theURL toURL:theDestinationURL error:&theError];
+            NSLog(@"MOVING: %@ %d %@", theURL, theResult, theError);
+            }
+        }
+
+    NSArray *theAllURLs = @[];
+    NSArray *theURLs = NULL;
+
+    NSURL *theBundleURL = [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"Samples"];
+    theBundleURL = [theBundleURL URLByStandardizingPath];
+    theEnumerator = [theFileManager tx_enumeratorAtURL:theBundleURL includingPropertiesForKeys:NULL options:0 errorHandler:theErrorHandler];
+    theURLs = [theEnumerator allObjects];
+    theAllURLs = [theAllURLs arrayByAddingObjectsFromArray:theURLs];
+
+    theEnumerator = [theFileManager tx_enumeratorAtURL:theDocumentsURL includingPropertiesForKeys:NULL options:0 errorHandler:theErrorHandler];
+    theURLs = [theEnumerator allObjects];
+    theAllURLs = [theAllURLs arrayByAddingObjectsFromArray:theURLs];
+
+
+    theAllURLs = [theAllURLs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"lastPathComponent LIKE '*.pdf'"]];
+
+    theAllURLs = [theAllURLs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+//        return(YES);
+        return ([[NSFileManager defaultManager] fileExistsAtPath:[evaluatedObject path]]);
+        }]];
+
+    theAllURLs = [theAllURLs sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return([[obj1 lastPathComponent] compare:[obj2 lastPathComponent]]);
+        }];
+
+    self.URLs = theAllURLs;
+    }
 
 @end
