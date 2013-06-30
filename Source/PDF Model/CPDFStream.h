@@ -33,7 +33,7 @@
 
 @interface CPDFStream : NSObject
 
-@property (readonly, nonatomic, assign) CGPDFStreamRef stream;
+@property (readonly, nonatomic, strong) __attribute__((NSObject)) CGPDFStreamRef stream;
 
 - (id)initWithStream:(CGPDFStreamRef)inStream;
 

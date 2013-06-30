@@ -46,12 +46,6 @@
 
 @implementation CPDFPageViewController
 
-@synthesize previewView = _previewView;
-@synthesize placeholderView = _placeholderView;
-@synthesize pageView = _pageView;
-@synthesize page = _page;
-@synthesize pagePlaceholderImage = _pagePlaceholderImage;
-
 - (id)initWithPage:(CPDFPage *)inPage;
     {
     if ((self = [super initWithNibName:NULL bundle:NULL]) != NULL)

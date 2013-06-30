@@ -49,10 +49,6 @@
 
 @implementation CPDFPageView
 
-@synthesize delegate = _delegate;
-@synthesize page = _page;
-@synthesize renderedPageCache = _renderedPageCache;
-
 +(Class)layerClass
     {
     return([CATiledLayer class]);
@@ -161,11 +157,11 @@
     {
     if ([inAnnotation.subtype isEqualToString:@"Link"])
         {
-        if ([[inAnnotation.info objectForKey:@"S"] isEqualToString:@"URI"])
+        if ([(inAnnotation.info)[@"S"] isEqualToString:@"URI"])
             {
             return(YES);
             }
-        else if ([[inAnnotation.info objectForKey:@"S"] isEqualToString:@"GoTo"])
+        else if ([(inAnnotation.info)[@"S"] isEqualToString:@"GoTo"])
             {
             return(YES);
             }
@@ -233,11 +229,11 @@
     CPDFAnnotation *theAnnotation = [self annotationForPoint:theLocation];
     if (theAnnotation != NULL && [self isAnnotationInteractive:theAnnotation])
         {
-        NSString *theType = [theAnnotation.info objectForKey:@"S"];
+        NSString *theType = (theAnnotation.info)[@"S"];
 
         if ([theType isEqualToString:@"URI"])
             {
-            NSString *theURLString = [theAnnotation.info objectForKey:@"URI"];
+            NSString *theURLString = (theAnnotation.info)[@"URI"];
             if (theURLString.length > 0)
                 {
                 NSURL *theURL = [NSURL URLWithString:theURLString];
@@ -259,7 +255,7 @@
             }
         else if ([theType isEqualToString:@"GoTo"])
             {
-            NSString *thePageName = [theAnnotation.info objectForKey:@"D"];
+            NSString *thePageName = (theAnnotation.info)[@"D"];
 
             CPDFPage *thePage = [self.page.document pageForPageName:thePageName];
             if (thePage == NULL)

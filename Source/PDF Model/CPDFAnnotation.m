@@ -36,17 +36,12 @@
 #import "CPDFStream.h"
 
 @interface CPDFAnnotation ()
-@property (readwrite, nonatomic, assign) CGPDFDictionaryRef dictionary;
+@property (readwrite, nonatomic, strong) __attribute__((NSObject)) CGPDFDictionaryRef dictionary;
 @end
 
 #pragma mark -
 
 @implementation CPDFAnnotation
-
-@synthesize subtype = _subtype;
-@synthesize info = _info;
-@synthesize frame = _frame;
-@synthesize dictionary = _dictionary;
 
 - (id)initWithDictionary:(CGPDFDictionaryRef)inDictionary
     {
@@ -66,12 +61,12 @@
         NSArray *theRectArray = TXConvertPDFObject(theObject);
         _frame = (CGRect){
             .origin = {
-                .x = [[theRectArray objectAtIndex:0] floatValue],
-                .y = [[theRectArray objectAtIndex:1] floatValue],
+                .x = [theRectArray[0] floatValue],
+                .y = [theRectArray[1] floatValue],
                 },
             .size = {
-                .width = [[theRectArray objectAtIndex:2] floatValue] - [[theRectArray objectAtIndex:0] floatValue],
-                .height = [[theRectArray objectAtIndex:3] floatValue] - [[theRectArray objectAtIndex:1] floatValue],
+                .width = [theRectArray[2] floatValue] - [theRectArray[0] floatValue],
+                .height = [theRectArray[3] floatValue] - [theRectArray[1] floatValue],
                 },
             };
 

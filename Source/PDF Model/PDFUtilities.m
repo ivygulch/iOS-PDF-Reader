@@ -48,7 +48,7 @@ static id ConvertPDFObject_(CGPDFObjectRef inObject, NSMutableSet *convertedPoin
 
     if (theType == kCGPDFObjectTypeArray || theType == kCGPDFObjectTypeDictionary)
         {
-        NSNumber *theKey = [NSNumber numberWithInt:(int)inObject];
+        NSNumber *theKey = @((int)inObject);
         if ([convertedPointers containsObject:theKey])
             {
             return([[CPDFObjectReference alloc] init]);
@@ -78,7 +78,7 @@ static id ConvertPDFObject_(CGPDFObjectRef inObject, NSMutableSet *convertedPoin
             {
             CGPDFInteger theValue;
             CGPDFObjectGetValue(inObject, theType, &theValue);
-            theResult = [NSNumber numberWithLong:theValue];
+            theResult = @(theValue);
             }
             break;
         case kCGPDFObjectTypeReal:
@@ -92,7 +92,7 @@ static id ConvertPDFObject_(CGPDFObjectRef inObject, NSMutableSet *convertedPoin
             {
             const char *theValue;
             CGPDFObjectGetValue(inObject, theType, &theValue);
-            return([NSString stringWithUTF8String:theValue]);
+            return(@(theValue));
             }
             break;
         case kCGPDFObjectTypeString:
@@ -127,10 +127,10 @@ static id ConvertPDFObject_(CGPDFObjectRef inObject, NSMutableSet *convertedPoin
             NSMutableDictionary *theDictionary = [NSMutableDictionary dictionary];
 
             TXCGPDFDictionaryApplyBlock(theValue, ^(const char *key, CGPDFObjectRef value) {
-                NSString *theKey = [NSString stringWithUTF8String:key];
+                NSString *theKey = @(key);
                 id theObject = NULL;
                 theObject = ConvertPDFObject_(value, convertedPointers);
-                [theDictionary setObject:theObject forKey:theKey];
+                theDictionary[theKey] = theObject;
                 });
             theResult = theDictionary;
             }
@@ -219,7 +219,7 @@ NSString *TXCGPDFObjectAsString(CGPDFObjectRef inObject)
         {
         const char *theValue;
         CGPDFObjectGetValue(inObject, kCGPDFObjectTypeName, &theValue);
-        return([NSString stringWithUTF8String:theValue]);
+        return(@(theValue));
         }
     else
         {

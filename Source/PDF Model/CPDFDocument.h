@@ -38,7 +38,7 @@
 @interface CPDFDocument : NSObject <NSFastEnumeration>
 
 @property (readonly, nonatomic, strong) NSURL *URL;
-@property (readonly, nonatomic, assign) CGPDFDocumentRef cg;
+@property (readonly, nonatomic, strong) __attribute__((NSObject)) CGPDFDocumentRef cg;
 @property (readonly, nonatomic, assign) NSUInteger numberOfPages;
 @property (readwrite, nonatomic, weak) id <CPDFDocumentDelegate> delegate;
 

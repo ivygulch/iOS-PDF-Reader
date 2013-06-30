@@ -107,12 +107,12 @@
         NSDictionary *theMetadata = [NSDictionary dictionaryWithContentsOfURL:theMetadataURL];
         if (theMetadata != NULL)
             {
-            NSURL *theDataURL = [self.URL URLByAppendingPathComponent:[theMetadata objectForKey:@"href"]];
-            NSUInteger theCost = [[theMetadata objectForKey:@"cost"] unsignedIntegerValue];
+            NSURL *theDataURL = [self.URL URLByAppendingPathComponent:theMetadata[@"href"]];
+            NSUInteger theCost = [theMetadata[@"cost"] unsignedIntegerValue];
             NSData *theData = [NSData dataWithContentsOfURL:theDataURL options:NSDataReadingMapped error:NULL];
             if (theData)
                 {
-                NSString *theType = [theMetadata objectForKey:@"type"];            
+                NSString *theType = theMetadata[@"type"];            
                 [self data:theData type:theType toObject:&theObject error:NULL];
                 
                 [self.cache setObject:theObject forKey:key cost:theCost];
@@ -152,11 +152,9 @@
             
         if (theWriteFlag == YES)
             {
-            NSDictionary *theMetadata = [NSDictionary dictionaryWithObjectsAndKeys:
-                [theDataURL lastPathComponent], @"href",
-                [NSNumber numberWithUnsignedInteger:g], @"cost",
-                theType, @"type",
-                NULL];
+            NSDictionary *theMetadata = @{@"href": [theDataURL lastPathComponent],
+                @"cost": @(g),
+                @"type": theType};
 
             NSData *theData = [NSPropertyListSerialization dataWithPropertyList:theMetadata format:NSPropertyListBinaryFormat_v1_0 options:0 error:NULL];
             [theData writeToURL:[theURL URLByAppendingPathExtension:@"metadata.plist"] options:0 error:NULL];
@@ -173,7 +171,7 @@
     NSDictionary *theMetadata = [NSDictionary dictionaryWithContentsOfURL:theMetadataURL];
     if (theMetadata != NULL)
         {
-        NSURL *theDataURL = [self.URL URLByAppendingPathComponent:[theMetadata objectForKey:@"href"]];
+        NSURL *theDataURL = [self.URL URLByAppendingPathComponent:theMetadata[@"href"]];
         
         [[NSFileManager defaultManager] removeItemAtURL:theMetadataURL error:NULL];
         [[NSFileManager defaultManager] removeItemAtURL:theDataURL error:NULL];

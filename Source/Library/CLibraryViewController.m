@@ -41,8 +41,6 @@
 
 @implementation CLibraryViewController
 
-@synthesize URLs = _URLs;
-
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -136,7 +134,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
-    NSURL *theURL = [self.URLs objectAtIndex:indexPath.row];
+    NSURL *theURL = (self.URLs)[indexPath.row];
 
 //    CPDFDocument *theDocument = [[CPDFDocument alloc] initWithURL:theURL];
     NSString *theTitle = [theURL lastPathComponent];
@@ -157,7 +155,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSURL *theURL = [self.URLs objectAtIndex:indexPath.row];
+    NSURL *theURL = (self.URLs)[indexPath.row];
     CPDFDocumentViewController *theViewController = [[CPDFDocumentViewController alloc] initWithURL:theURL];
     [self.navigationController pushViewController:theViewController animated:YES];
 }
@@ -184,7 +182,7 @@
             }
         }
 
-    NSArray *theAllURLs = [NSArray array];
+    NSArray *theAllURLs = @[];
     NSArray *theURLs = NULL;
 
     NSURL *theBundleURL = [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"Samples"];
@@ -217,7 +215,7 @@
     [self scanDirectories];
     [self.tableView reloadData];
 
-    NSURL *theURL = [[inNotification userInfo] objectForKey:@"URL"];
+    NSURL *theURL = [inNotification userInfo][@"URL"];
     CPDFDocumentViewController *theViewController = [[CPDFDocumentViewController alloc] initWithURL:theURL];
     if (self.navigationController.topViewController == self)
         {
@@ -225,7 +223,7 @@
         }
     else
         {
-        [self.navigationController setViewControllers:[NSArray arrayWithObjects:self, theViewController, NULL] animated:YES];
+        [self.navigationController setViewControllers:@[self, theViewController] animated:YES];
         }
     }
 

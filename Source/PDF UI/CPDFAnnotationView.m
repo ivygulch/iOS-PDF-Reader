@@ -45,9 +45,6 @@
 
 @implementation CPDFAnnotationView
 
-@synthesize annotation = _annotation;
-@synthesize moviePlayer = _moviePlayer;
-
 - (id)initWithAnnotation:(CPDFAnnotation *)inAnnotation;
     {
     if ((self = [super initWithFrame:inAnnotation.frame]) != NULL)

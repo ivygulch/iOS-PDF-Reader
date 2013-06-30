@@ -33,8 +33,6 @@
 
 @implementation CPDFStream
 
-@synthesize stream = _stream;
-
 - (id)initWithStream:(CGPDFStreamRef)inStream
     {
     if ((self = [super init]) != NULL)
@@ -72,7 +70,7 @@
 
     NSURL *theURL = NULL;
 
-    theURL = [NSURL fileURLWithPath:[NSString stringWithUTF8String:thePathBuffer]];
+    theURL = [NSURL fileURLWithPath:@(thePathBuffer)];
 
     return(theURL);
     }

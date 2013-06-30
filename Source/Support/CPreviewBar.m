@@ -95,7 +95,7 @@
         [CATransaction begin];
 
         [_selectedPreviewIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-            CALayer *theLayer = [self.layer.sublayers objectAtIndex:idx];
+            CALayer *theLayer = (self.layer.sublayers)[idx];
             theLayer.borderWidth = 0.0;
             }];
 
@@ -103,7 +103,7 @@
         _selectedPreviewIndexes = inIndexSet;
 
         [_selectedPreviewIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-            CALayer *theLayer = [self.layer.sublayers objectAtIndex:idx];
+            CALayer *theLayer = (self.layer.sublayers)[idx];
             theLayer.borderColor = self.highlightColor.CGColor;
             theLayer.borderWidth = 5.0;
             }];
@@ -142,7 +142,7 @@
 //        theLayer.borderWidth = 1.0;
 //        theLayer.backgroundColor = [UIColor whiteColor].CGColor;
         theLayer.anchorPoint = CGPointZero;
-        [theLayer setValue:[NSNumber numberWithUnsignedInteger:N] forKey:@"previewIndex"];
+        [theLayer setValue:@(N) forKey:@"previewIndex"];
 
         UIImage *theImage = [self.delegate previewBar:self previewAtIndex:N];
         if (theImage)
@@ -169,7 +169,7 @@
 
 - (void)updatePreviewAtIndex:(NSInteger)inIndex;
     {
-    CALayer *theLayer = [self.layer.sublayers objectAtIndex:inIndex];
+    CALayer *theLayer = (self.layer.sublayers)[inIndex];
     UIImage *theImage = [self.delegate previewBar:self previewAtIndex:inIndex];
     if (theImage)
         {

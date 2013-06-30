@@ -44,7 +44,6 @@
 
 @implementation CPDFPage
 
-@synthesize document = _document;
 @synthesize pageNumber = _pageNumber;
 @synthesize cg = _cg;
 @synthesize annotations = _annotations;
@@ -60,15 +59,6 @@
 		}
 	return(self);
 	}
-
-- (void)dealloc
-    {
-    if (_cg != NULL)
-        {
-        CGPDFPageRelease(_cg);
-        _cg = NULL;
-        }
-    }
 
 - (NSString *)description
     {

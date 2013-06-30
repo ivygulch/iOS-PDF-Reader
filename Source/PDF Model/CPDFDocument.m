@@ -37,7 +37,7 @@
 #import "PDFUtilities.h"
 
 @interface CPDFDocument ()
-@property (readwrite, nonatomic, assign) dispatch_queue_t queue;
+@property (readwrite, nonatomic, strong) dispatch_queue_t queue;
 @property (readwrite, nonatomic, strong) NSDictionary *pageNumbersByName;
 
 @end
@@ -45,13 +45,6 @@
 #pragma mark -
 
 @implementation CPDFDocument
-
-@synthesize URL = _URL;
-@synthesize cg = _cg;
-@synthesize delegate = _delegate;
-
-@synthesize queue = _queue;
-@synthesize pageNumbersByName = _pageNumbersByName;
 
 - (id)initWithURL:(NSURL *)inURL;
 	{
@@ -63,21 +56,6 @@
 		}
 	return(self);
 	}
-
-- (void)dealloc
-    {
-    if (_queue != NULL)
-        {
-        dispatch_release(_queue);
-        _queue = NULL;
-        }
-
-    if (_cg)
-        {
-        CGPDFDocumentRelease(_cg);
-        _cg = NULL;
-        }
-    }
 
 #pragma mark -
 
@@ -130,7 +108,7 @@
 
 - (CPDFPage *)pageForPageName:(NSString *)inPageName;
     {
-    NSNumber *thePageNumber = [self.pageNumbersByName objectForKey:inPageName];
+    NSNumber *thePageNumber = (self.pageNumbersByName)[inPageName];
     if (thePageNumber != NULL)
         {
         return([self pageForPageNumber:thePageNumber.intValue]);
@@ -151,7 +129,7 @@
             {
             CPDFPage *thePage = [self pageForPageNumber:N + 1];
             CGPDFDictionaryRef thePageInfo = CGPDFPageGetDictionary(thePage.cg);
-            [thePagesByPageInfo setObject:thePage forKey:[NSNumber numberWithInt:(int)thePageInfo]];
+            thePagesByPageInfo[@((int)thePageInfo)] = thePage;
             }
 
         NSMutableDictionary *thePageNumbersForPageNames = [NSMutableDictionary dictionary];
@@ -175,9 +153,9 @@
             CGPDFDictionaryRef thePageDictionary = NULL;
             CGPDFArrayGetDictionary(thePageHolderArray, 0, &thePageDictionary);
 
-            CPDFPage *thePage = [thePagesByPageInfo objectForKey:[NSNumber numberWithInt:(int)thePageDictionary]];
+            CPDFPage *thePage = thePagesByPageInfo[@((int)thePageDictionary)];
 
-            [thePageNumbersForPageNames setObject:[NSNumber numberWithInt:thePage.pageNumber] forKey:thePageName];
+            thePageNumbersForPageNames[thePageName] = @(thePage.pageNumber);
             }
 
         _pageNumbersByName = [thePageNumbersForPageNames copy];

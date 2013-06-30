@@ -38,7 +38,7 @@
 @property (readonly, nonatomic, strong) NSString *subtype;
 @property (readonly, nonatomic, assign) CGRect frame;
 @property (readonly, nonatomic, strong) NSDictionary *info;
-@property (readonly, nonatomic, assign) CGPDFDictionaryRef dictionary;
+@property (readonly, nonatomic, strong) __attribute__((NSObject)) CGPDFDictionaryRef dictionary;
 
 - (id)initWithDictionary:(CGPDFDictionaryRef)inDictionary;
 

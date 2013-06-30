@@ -37,7 +37,7 @@
 
 @property (readonly, nonatomic, weak) CPDFDocument *document;
 @property (readonly, nonatomic, assign) NSInteger pageNumber;
-@property (readonly, nonatomic, assign) CGPDFPageRef cg;
+@property (readonly, nonatomic, strong) __attribute__((NSObject)) CGPDFPageRef cg;
 @property (readonly, nonatomic, strong) NSArray *annotations;
 @property (readonly, nonatomic, assign) CGRect mediaBox;
 

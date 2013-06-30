@@ -89,7 +89,7 @@ static void *kKVOContext = NULL;
     {
     if (context == &kKVOContext)
         {
-        CGRect theFrame = [[change objectForKey:NSKeyValueChangeNewKey] CGRectValue];
+        CGRect theFrame = [change[NSKeyValueChangeNewKey] CGRectValue];
         
         [self updateContentSizeForFrame:theFrame];
         }

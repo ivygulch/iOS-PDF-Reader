@@ -57,15 +57,15 @@
             NSMutableDictionary *theUserInfo = [NSMutableDictionary dictionary];
             if (theDestinationURL != NULL)
                 {
-                [theUserInfo setObject:theDestinationURL forKey:@"URL"];
+                theUserInfo[@"URL"] = theDestinationURL;
                 }
             if (sourceApplication != NULL)
                 {
-                [theUserInfo setObject:sourceApplication forKey:@"sourceApplication"];
+                theUserInfo[@"sourceApplication"] = sourceApplication;
                 }
             if (annotation != NULL)
                 {
-                [theUserInfo setObject:annotation forKey:@"annotation"];
+                theUserInfo[@"annotation"] = annotation;
                 }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidOpenURL" object:application userInfo:theUserInfo];
             }
