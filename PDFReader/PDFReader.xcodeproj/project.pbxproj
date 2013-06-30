@@ -16,6 +16,8 @@
 		453902361780A1C800C3CC47 /* CPDFObjectReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 453902351780A1C800C3CC47 /* CPDFObjectReference.m */; };
 		453902381780A61300C3CC47 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453902371780A61300C3CC47 /* Storyboard.storyboard */; };
 		4539023B1780B39D00C3CC47 /* CPreviewCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4539023A1780B39D00C3CC47 /* CPreviewCollectionViewCell.m */; };
+		453902361780A1C800C3CC47 /* CPDFObjectReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 453902351780A1C800C3CC47 /* CPDFObjectReference.m */; };
+		453902381780A61300C3CC47 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453902371780A61300C3CC47 /* Storyboard.storyboard */; };
 		45454DF11558429C004AC470 /* CContentScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45454DF01558429B004AC470 /* CContentScrollView.m */; };
 		454BF5B41554B92600E7DE1D /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 454BF5B31554B92600E7DE1D /* MediaPlayer.framework */; };
 		455699A915507139009E52FE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4556998D15507139009E52FE /* InfoPlist.strings */; };
@@ -54,6 +56,9 @@
 		453902371780A61300C3CC47 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		453902391780B39D00C3CC47 /* CPreviewCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPreviewCollectionViewCell.h; sourceTree = "<group>"; };
 		4539023A1780B39D00C3CC47 /* CPreviewCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPreviewCollectionViewCell.m; sourceTree = "<group>"; };
+		453902341780A1C800C3CC47 /* CPDFObjectReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFObjectReference.h; sourceTree = "<group>"; };
+		453902351780A1C800C3CC47 /* CPDFObjectReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFObjectReference.m; sourceTree = "<group>"; };
+		453902371780A61300C3CC47 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		45454DEF1558429B004AC470 /* CContentScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CContentScrollView.h; sourceTree = "<group>"; };
 		45454DF01558429B004AC470 /* CContentScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CContentScrollView.m; sourceTree = "<group>"; };
 		454BF5B31554B92600E7DE1D /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };

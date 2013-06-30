@@ -226,7 +226,7 @@
         {
         [UIView animateWithDuration:UINavigationControllerHideShowBarDuration animations:^{
             self.navigationController.navigationBar.alpha = 0.0;
-            self.previewCollectionView.alpha = 0.0;
+            self.previewScrollView.alpha = 0.0;
             } completion:^(BOOL finished) {
             self.chromeHidden = YES;
             }];
