@@ -31,15 +31,14 @@
 
 #import "CPDFDocument.h"
 
-#import "CPDFDocument_Private.h"
 #import "CPDFPage.h"
-#import "CPersistentCache.h"
 #import "PDFUtilities.h"
+#import "CPDFPageRenderer.h"
 
 @interface CPDFDocument ()
 @property (readwrite, nonatomic, strong) dispatch_queue_t queue;
 @property (readwrite, nonatomic, strong) NSDictionary *pageNumbersByName;
-
+@property (readwrite, nonatomic, strong) NSCache *pageCache;
 @end
 
 #pragma mark -
@@ -55,6 +54,7 @@
         _URL = inURL;
 
         _cg = CGPDFDocumentCreateWithURL((__bridge CFURLRef)inURL);
+        _pageCache = [[NSCache alloc] init];
 		}
 	return(self);
 	}
@@ -99,7 +99,8 @@
     if (_coverImage == NULL)
         {
         CPDFPage *thePage = [self pageForPageNumber:1];
-        _coverImage = [thePage imageForBox:kCGPDFCropBox withSize:CGSizeZero scale:1.0];
+        UIImage *theImage = [[CPDFPageRenderer sharedInstance] imageForPage:thePage box:kCGPDFCropBox size:CGSizeZero scale:[UIScreen mainScreen].scale];
+        _coverImage = theImage;
         }
     return(_coverImage);
     }
@@ -109,11 +110,11 @@
 - (CPDFPage *)pageForPageNumber:(NSInteger)inPageNumber
     {
     NSString *theKey = [NSString stringWithFormat:@"page_%d", inPageNumber];
-    CPDFPage *thePage = [self.cache objectForKey:theKey];
+    CPDFPage *thePage = [self.pageCache objectForKey:theKey];
     if (thePage == NULL)
         {
         thePage = [[CPDFPage alloc] initWithDocument:self pageNumber:inPageNumber];
-        [self.cache setObject:thePage forKey:theKey];
+        [self.pageCache setObject:thePage forKey:theKey];
         }
     return(thePage);
     }
@@ -194,28 +195,18 @@
 
             CPDFPage *thePage = [self pageForPageNumber:thePageNumber];
 
-            NSString *theKey = [NSString stringWithFormat:@"page_%zd_image_128x128", thePageNumber];
-            if ([self.cache objectForKey:theKey] == NULL)
+            @autoreleasepool
                 {
-                @autoreleasepool
-                    {
-                    UIImage *theImage = [thePage imageForBox:kCGPDFCropBox withSize:(CGSize){ 128, 128 } scale:[UIScreen mainScreen].scale];
-                    [self.cache setObject:theImage forKey:theKey];
-                    }
+                [[CPDFPageRenderer sharedInstance] imageForPage:thePage box:kCGPDFCropBox size:(CGSize){ 128, 128 } scale:[UIScreen mainScreen].scale];
                 }
 
-            theKey = [NSString stringWithFormat:@"page_%zd_image_preview2", thePageNumber];
-            if ([self.cache objectForKey:theKey] == NULL)
+            @autoreleasepool
                 {
-                @autoreleasepool
-                    {
-                    CGSize theSize = [thePage rectForBox:kCGPDFCropBox].size;
-                    theSize.width *= 0.5;
-                    theSize.height *= 0.5;
+                CGSize theSize = [thePage rectForBox:kCGPDFCropBox].size;
+                theSize.width *= 0.5;
+                theSize.height *= 0.5;
 
-                    UIImage *theImage = [thePage imageForBox:kCGPDFCropBox withSize:theSize scale:[UIScreen mainScreen].scale];
-                    [self.cache setObject:theImage forKey:theKey];
-                    }
+                [[CPDFPageRenderer sharedInstance] imageForPage:thePage box:kCGPDFCropBox size:theSize scale:[UIScreen mainScreen].scale];
                 }
 
             dispatch_async(dispatch_get_main_queue(), ^(void) {
@@ -230,11 +221,6 @@
 
 - (void)stopGeneratingThumbnails
     {
-    }
-
-- (void)clearCachedThumbnails
-    {
-	[self.cache destroyAllPersistedData];
     }
 
 @end

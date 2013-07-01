@@ -34,6 +34,7 @@
 @protocol CPDFDocumentDelegate;
 
 @class CPDFPage;
+@class CPDFPageRenderer;
 
 @interface CPDFDocument : NSObject <NSFastEnumeration>
 
@@ -41,6 +42,7 @@
 @property (readonly, nonatomic, strong) __attribute__((NSObject)) CGPDFDocumentRef cg;
 @property (readonly, nonatomic, assign) NSUInteger numberOfPages;
 @property (readwrite, nonatomic, weak) id <CPDFDocumentDelegate> delegate;
+@property (readonly, nonatomic, strong) CPDFPageRenderer *renderer;
 
 @property (readonly, nonatomic, strong) NSString *title;
 @property (readonly, nonatomic, strong) UIImage *coverImage;
@@ -51,7 +53,6 @@
 - (CPDFPage *)pageForPageName:(NSString *)inPageName;
 
 - (void)startGeneratingThumbnails;
-- (void)clearCachedThumbnails;
 @end
 
 #pragma mark -

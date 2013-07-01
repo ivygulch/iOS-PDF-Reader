@@ -32,7 +32,6 @@
 #import "CPDFPage.h"
 
 #import "CPDFDocument.h"
-#import "CPDFDocument_Private.h"
 #import "Geometry.h"
 #import "CPersistentCache.h"
 #import "CPDFAnnotation.h"
@@ -59,7 +58,7 @@
 
 - (NSString *)description
     {
-    return([NSString stringWithFormat:@"%@ (#%d, %@)", [super description], self.pageNumber, NSStringFromCGRect(self.mediaBox)]);
+    return([NSString stringWithFormat:@"%@ (#%d)", [super description], self.pageNumber]);
     }
 
 - (CGPDFPageRef)cg
@@ -71,86 +70,11 @@
     return(_cg);
     }
 
-- (CGRect)mediaBox
-    {
-    return(CGPDFPageGetBoxRect(self.cg, kCGPDFMediaBox));
-    }
-
-- (CGRect)cropBox
-    {
-    return(CGPDFPageGetBoxRect(self.cg, kCGPDFCropBox));
-    }
-
-- (CGRect)bleedBox
-    {
-    return(CGPDFPageGetBoxRect(self.cg, kCGPDFBleedBox));
-    }
-
-- (CGRect)trimBox
-    {
-    return(CGPDFPageGetBoxRect(self.cg, kCGPDFTrimBox));
-    }
-
-- (CGRect)artBox
-    {
-    return(CGPDFPageGetBoxRect(self.cg, kCGPDFArtBox));
-    }
-
 - (CGRect)rectForBox:(CGPDFBox)inBox;
     {
     CGRect theBox = CGPDFPageGetBoxRect(self.cg, inBox);
     return theBox;
     }
-    
-- (UIImage *)imageForBox:(CGPDFBox)inBox withSize:(CGSize)inSize scale:(CGFloat)inScale
-    {
-    CGRect theImageBox = CGPDFPageGetBoxRect(self.cg, inBox);
-    if (CGSizeEqualToSize(inSize, CGSizeZero))
-        {
-        inSize = theImageBox.size;
-        }
-
-    NSString *theKey = [NSString stringWithFormat:@"PageImage_%d_%d_%f_%f_%f", self.pageNumber, inBox, inSize.width, inSize.height, inScale];
-    NSLog(@"%@", theKey);
-    UIImage *theImage = [self.document.cache objectForKey:theKey];
-    if (theImage != NULL)
-        {
-        return(theImage);
-        }
-
-    UIGraphicsBeginImageContextWithOptions(inSize, NO, inScale);
-
-    CGContextRef theContext = UIGraphicsGetCurrentContext();
-
-	CGContextSaveGState(theContext);
-
-
-
-    const CGRect theRenderRect = ScaleAndAlignRectToRect(theImageBox, (CGRect){ .size = inSize }, ImageScaling_Proportionally, ImageAlignment_Center);
-
-    // Fill just the render rect with white.
-    CGContextSetRGBFillColor(theContext, 1.0,1.0,1.0,1.0);
-    CGContextFillRect(theContext, theRenderRect);
-
-    // Flip the context so that the PDF page is rendered right side up.
-	CGContextTranslateCTM(theContext, 0.0, inSize.height);
-	CGContextScaleCTM(theContext, 1.0, -1.0);
-
-	// Scale the context so that the PDF page is rendered at the correct size for the zoom level.
-    CGContextTranslateCTM(theContext, -(theImageBox.origin.x - theRenderRect.origin.x), -(theImageBox.origin.y - theRenderRect.origin.y));
-	CGContextScaleCTM(theContext, theRenderRect.size.width / theImageBox.size.width, theRenderRect.size.height / theImageBox.size.height);
-
-	CGContextDrawPDFPage(theContext, self.cg);
-
-    theImage = UIGraphicsGetImageFromCurrentImageContext();
-
-    UIGraphicsEndImageContext();
-
-    [self.document.cache setObject:theImage forKey:theKey];
-
-    return(theImage);
-    }
-
 
 - (NSArray *)annotations
     {

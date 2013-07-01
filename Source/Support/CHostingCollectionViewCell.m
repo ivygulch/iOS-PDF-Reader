@@ -47,13 +47,6 @@
     return self;
     }
 
-- (void)prepareForReuse
-    {
-    [super prepareForReuse];
-    //
-    NSLog(@"tesT");
-    }
-
 - (void)setParentViewController:(UIViewController *)parentViewController
     {
     if (_parentViewController != parentViewController)

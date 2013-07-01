@@ -34,7 +34,13 @@
 - (void)viewWillAppear:(BOOL)animated
     {
     UICollectionViewFlowLayout *theLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    theLayout.minimumLineSpacing = 0.0;
+    theLayout.minimumInteritemSpacing = 0.0;
     theLayout.itemSize = self.view.bounds.size;
+    theLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    theLayout.headerReferenceSize = CGSizeZero;
+    theLayout.footerReferenceSize = CGSizeZero;
+    theLayout.sectionInset = (UIEdgeInsets){};
     }
 
 - (void)setDocumentURL:(NSURL *)documentURL
@@ -54,7 +60,7 @@
     CPDFPage *thePage = [self.document pageForPageNumber:indexPath.item + 1];
 
     CHostingCollectionViewCell *theCell = (CHostingCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"PAGE" forIndexPath:indexPath];
-    theCell.hostedViewController;
+    [theCell hostedViewController];
     theCell.parentViewController = self;
 
     CPDFPageViewController *theViewController = (CPDFPageViewController *)theCell.hostedViewController;

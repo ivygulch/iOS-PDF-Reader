@@ -27,7 +27,6 @@
 		455699D415507141009E52FE /* CLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699BA15507141009E52FE /* CLibrary.m */; };
 		455699D515507141009E52FE /* CLibraryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699BC15507141009E52FE /* CLibraryTableViewController.m */; };
 		455699D715507141009E52FE /* CPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699C015507141009E52FE /* CPDFDocument.m */; };
-		455699D815507141009E52FE /* CPDFDocument_Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699C215507141009E52FE /* CPDFDocument_Private.m */; };
 		455699D915507141009E52FE /* CPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699C415507141009E52FE /* CPDFPage.m */; };
 		455699DA15507141009E52FE /* CPDFDocumentPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699C715507141009E52FE /* CPDFDocumentPageViewController.m */; };
 		455699DD15507141009E52FE /* CPDFPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699CC15507141009E52FE /* CPDFPageView.m */; };
@@ -36,6 +35,7 @@
 		455699F9155071A5009E52FE /* CPersistentCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699F0155071A5009E52FE /* CPersistentCache.m */; };
 		455699FB155071A5009E52FE /* NSFileManager_BugFixExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 455699F4155071A5009E52FE /* NSFileManager_BugFixExtensions.m */; };
 		455699FD155071BB009E52FE /* Samples in Resources */ = {isa = PBXBuildFile; fileRef = 455699FC155071BB009E52FE /* Samples */; };
+		45731CC41781159C001C47A4 /* CPDFPageRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 45731CC31781159C001C47A4 /* CPDFPageRenderer.m */; };
 		45AFDB3A1780DB7B00664807 /* CPDFDocumentPageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AFDB391780DB7B00664807 /* CPDFDocumentPageCollectionViewController.m */; };
 		45AFDB3D1780DC0500664807 /* CDemoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AFDB3C1780DC0500664807 /* CDemoTableViewCell.m */; };
 		45AFDB401780DE7400664807 /* CHostingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AFDB3F1780DE7400664807 /* CHostingCollectionViewCell.m */; };
@@ -80,8 +80,6 @@
 		455699BC15507141009E52FE /* CLibraryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLibraryTableViewController.m; sourceTree = "<group>"; };
 		455699BF15507141009E52FE /* CPDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFDocument.h; sourceTree = "<group>"; };
 		455699C015507141009E52FE /* CPDFDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFDocument.m; sourceTree = "<group>"; };
-		455699C115507141009E52FE /* CPDFDocument_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFDocument_Private.h; sourceTree = "<group>"; };
-		455699C215507141009E52FE /* CPDFDocument_Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFDocument_Private.m; sourceTree = "<group>"; };
 		455699C315507141009E52FE /* CPDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFPage.h; sourceTree = "<group>"; };
 		455699C415507141009E52FE /* CPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFPage.m; sourceTree = "<group>"; };
 		455699C615507141009E52FE /* CPDFDocumentPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFDocumentPageViewController.h; sourceTree = "<group>"; };
@@ -97,6 +95,8 @@
 		455699F3155071A5009E52FE /* NSFileManager_BugFixExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSFileManager_BugFixExtensions.h; sourceTree = "<group>"; };
 		455699F4155071A5009E52FE /* NSFileManager_BugFixExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSFileManager_BugFixExtensions.m; sourceTree = "<group>"; };
 		455699FC155071BB009E52FE /* Samples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Samples; sourceTree = "<group>"; };
+		45731CC21781159C001C47A4 /* CPDFPageRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFPageRenderer.h; sourceTree = "<group>"; };
+		45731CC31781159C001C47A4 /* CPDFPageRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFPageRenderer.m; sourceTree = "<group>"; };
 		45AFDB381780DB7B00664807 /* CPDFDocumentPageCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPDFDocumentPageCollectionViewController.h; sourceTree = "<group>"; };
 		45AFDB391780DB7B00664807 /* CPDFDocumentPageCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPDFDocumentPageCollectionViewController.m; sourceTree = "<group>"; };
 		45AFDB3B1780DC0500664807 /* CDemoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDemoTableViewCell.h; sourceTree = "<group>"; };
@@ -229,14 +229,14 @@
 			children = (
 				455699BF15507141009E52FE /* CPDFDocument.h */,
 				455699C015507141009E52FE /* CPDFDocument.m */,
-				455699C115507141009E52FE /* CPDFDocument_Private.h */,
-				455699C215507141009E52FE /* CPDFDocument_Private.m */,
 				455699C315507141009E52FE /* CPDFPage.h */,
 				455699C415507141009E52FE /* CPDFPage.m */,
 				45D969991552F8F600338688 /* CPDFAnnotation.h */,
 				45D9699A1552F8F600338688 /* CPDFAnnotation.m */,
 				45C25DD4155335AC001BA233 /* CPDFStream.h */,
 				45C25DD5155335AC001BA233 /* CPDFStream.m */,
+				45731CC21781159C001C47A4 /* CPDFPageRenderer.h */,
+				45731CC31781159C001C47A4 /* CPDFPageRenderer.m */,
 				45C25DD7155335BD001BA233 /* PDFUtilities.h */,
 				45C25DD8155335BD001BA233 /* PDFUtilities.m */,
 				453902341780A1C800C3CC47 /* CPDFObjectReference.h */,
@@ -374,7 +374,6 @@
 				455699D515507141009E52FE /* CLibraryTableViewController.m in Sources */,
 				4539023B1780B39D00C3CC47 /* CPreviewCollectionViewCell.m in Sources */,
 				455699D715507141009E52FE /* CPDFDocument.m in Sources */,
-				455699D815507141009E52FE /* CPDFDocument_Private.m in Sources */,
 				455699D915507141009E52FE /* CPDFPage.m in Sources */,
 				453902361780A1C800C3CC47 /* CPDFObjectReference.m in Sources */,
 				45AFDB3A1780DB7B00664807 /* CPDFDocumentPageCollectionViewController.m in Sources */,
@@ -390,6 +389,7 @@
 				45D969CD1553177800338688 /* CPDFAnnotationView.m in Sources */,
 				45C25DD6155335AC001BA233 /* CPDFStream.m in Sources */,
 				45C25DD9155335BD001BA233 /* PDFUtilities.m in Sources */,
+				45731CC41781159C001C47A4 /* CPDFPageRenderer.m in Sources */,
 				45AFDB401780DE7400664807 /* CHostingCollectionViewCell.m in Sources */,
 				45454DF11558429C004AC470 /* CContentScrollView.m in Sources */,
 				45F9FAFA1582D495004D267B /* CFadelessTiledLayer.m in Sources */,

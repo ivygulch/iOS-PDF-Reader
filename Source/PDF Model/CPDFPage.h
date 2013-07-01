@@ -43,6 +43,5 @@
 - (id)initWithDocument:(CPDFDocument *)inDocument pageNumber:(NSInteger)inPageNumber;
 
 - (CGRect)rectForBox:(CGPDFBox)inBox;
-- (UIImage *)imageForBox:(CGPDFBox)inBox withSize:(CGSize)inSize scale:(CGFloat)inScale;
 
 @end

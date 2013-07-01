@@ -63,14 +63,9 @@
     self.pageView.page = self.page;
     [self.view addSubview:self.pageView];
 
-    if (self.page != NULL)
-        {
-//        self.previewView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-//        self.previewView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//        self.previewView.image = self.page.preview;
-//        [self.view addSubview:self.previewView];
-
-        }
+    self.previewView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    self.previewView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:self.previewView];
     }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -82,6 +77,7 @@
     {
     _page = page;
     self.pageView.page = page;
+//    self.previewView.image = self.page.preview;
     }
 
 - (NSUInteger)pageNumber

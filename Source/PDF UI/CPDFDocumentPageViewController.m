@@ -40,6 +40,7 @@
 #import "CContentScrollView.h"
 #import "Geometry.h"
 #import "CPreviewCollectionViewCell.h"
+#import "CPDFPageRenderer.h"
 
 @interface CPDFDocumentPageViewController () <CPDFDocumentDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, CPDFPageViewDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -589,7 +590,8 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
     {
     CPreviewCollectionViewCell *theCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CELL" forIndexPath:indexPath];
-    UIImage *theImage = [[self.document pageForPageNumber:indexPath.item + 1] imageForBox:kCGPDFCropBox withSize:(CGSize)theCell.imageView.bounds.size scale:0.0];
+    CPDFPage *thePage = [self.document pageForPageNumber:indexPath.item + 1];
+    UIImage *theImage = [[CPDFPageRenderer sharedInstance] imageForPage:thePage box:kCGPDFCropBox size:(CGSize)theCell.imageView.bounds.size scale:[UIScreen mainScreen].scale];
     theCell.imageView.image = theImage;
     return(theCell);
     }
