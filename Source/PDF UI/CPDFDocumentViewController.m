@@ -194,6 +194,11 @@
         [self populateCache];
         [self.document startGeneratingThumbnails];
         });
+
+        if (self.startingPage > 0) {
+            CPDFPage *thePage = [self.document pageForPageNumber:self.startingPage];
+            [self openPage:thePage];
+        }
     }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -225,7 +230,7 @@
     if (self.chromeHidden == NO)
         {
         [UIView animateWithDuration:UINavigationControllerHideShowBarDuration animations:^{
-            self.navigationController.navigationBar.alpha = 0.0;
+//            self.navigationController.navigationBar.alpha = 0.0;
             self.previewCollectionView.alpha = 0.0;
             } completion:^(BOOL finished) {
             self.chromeHidden = YES;
@@ -236,7 +241,7 @@
 - (void)toggleChrome
     {
     [UIView animateWithDuration:UINavigationControllerHideShowBarDuration animations:^{
-        self.navigationController.navigationBar.alpha = (1.0 - !self.chromeHidden);
+//        self.navigationController.navigationBar.alpha = (1.0 - !self.chromeHidden);
         self.previewCollectionView.alpha = (1.0 - !self.chromeHidden);
         } completion:^(BOOL finished) {
         self.chromeHidden = !self.chromeHidden;

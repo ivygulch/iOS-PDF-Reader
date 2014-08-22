@@ -39,6 +39,7 @@
 @interface CPDFDocumentViewController : UIViewController
 
 @property (readwrite, nonatomic, strong) NSURL *documentURL;
+@property (readwrite, nonatomic, assign) NSUInteger startingPage;
 @property (readwrite, nonatomic, strong) CPDFDocument *document;
 
 @property (readonly, nonatomic, strong) UIPageViewController *pageViewController;
