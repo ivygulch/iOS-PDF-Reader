@@ -1,1 +1,12 @@
-PDFReader/Samples/*.pdf
+# Added these lines to .gitignore
+# xcode noise
+build/*
+*.mode1v3
+*.pbxuser
+*.perspectivev3
+*.xcworkspace
+xcuserdata
+
+# osx noise
+.DS_Store
+profile
